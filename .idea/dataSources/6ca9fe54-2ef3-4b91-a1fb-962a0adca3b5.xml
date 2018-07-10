@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@localhost">
+  <database-model serializer="dbm" rdbms="ORACLE" format-version="4.7">
+    <root id="1"/>
+    <schema id="2" parent="1" name="CAR">
+      <ObjectId>107</ObjectId>
+      <IntrospectionTimestamp>2018-07-10.15:25:21</IntrospectionTimestamp>
+      <CreatedTimestamp>2018-06-20.20:07:26</CreatedTimestamp>
+      <ModifiedTimestamp>2018-07-09.18:40:29</ModifiedTimestamp>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="PUBLIC">
+      <ObjectId>1</ObjectId>
+    </schema>
+    <schema id="4" parent="1" name="SYS">
+      <ObjectId>0</ObjectId>
+    </schema>
+    <schema id="5" parent="1" name="AUDSYS">
+      <ObjectId>8</ObjectId>
+    </schema>
+    <schema id="6" parent="1" name="SYSTEM">
+      <ObjectId>9</ObjectId>
+    </schema>
+    <schema id="7" parent="1" name="OUTLN">
+      <ObjectId>13</ObjectId>
+    </schema>
+    <schema id="8" parent="1" name="GSMADMIN_INTERNAL">
+      <ObjectId>21</ObjectId>
+    </schema>
+    <schema id="9" parent="1" name="GSMUSER">
+      <ObjectId>22</ObjectId>
+    </schema>
+    <schema id="10" parent="1" name="DIP">
+      <ObjectId>23</ObjectId>
+    </schema>
+    <schema id="11" parent="1" name="REMOTE_SCHEDULER_AGENT">
+      <ObjectId>34</ObjectId>
+    </schema>
+    <schema id="12" parent="1" name="DBSFWUSER">
+      <ObjectId>35</ObjectId>
+    </schema>
+    <schema id="13" parent="1" name="ORACLE_OCM">
+      <ObjectId>39</ObjectId>
+    </schema>
+    <schema id="14" parent="1" name="SYS$UMF">
+      <ObjectId>46</ObjectId>
+    </schema>
+    <schema id="15" parent="1" name="DBSNMP">
+      <ObjectId>54</ObjectId>
+    </schema>
+    <schema id="16" parent="1" name="APPQOSSYS">
+      <ObjectId>55</ObjectId>
+    </schema>
+    <schema id="17" parent="1" name="GSMCATUSER">
+      <ObjectId>59</ObjectId>
+    </schema>
+    <schema id="18" parent="1" name="GGSYS">
+      <ObjectId>60</ObjectId>
+    </schema>
+    <schema id="19" parent="1" name="XDB">
+      <ObjectId>62</ObjectId>
+    </schema>
+    <schema id="20" parent="1" name="ANONYMOUS">
+      <ObjectId>63</ObjectId>
+    </schema>
+    <schema id="21" parent="1" name="WMSYS">
+      <ObjectId>72</ObjectId>
+    </schema>
+    <schema id="22" parent="1" name="OJVMSYS">
+      <ObjectId>81</ObjectId>
+    </schema>
+    <schema id="23" parent="1" name="CTXSYS">
+      <ObjectId>84</ObjectId>
+    </schema>
+    <schema id="24" parent="1" name="ORDSYS">
+      <ObjectId>86</ObjectId>
+    </schema>
+    <schema id="25" parent="1" name="ORDDATA">
+      <ObjectId>87</ObjectId>
+    </schema>
+    <schema id="26" parent="1" name="ORDPLUGINS">
+      <ObjectId>88</ObjectId>
+    </schema>
+    <schema id="27" parent="1" name="SI_INFORMTN_SCHEMA">
+      <ObjectId>89</ObjectId>
+    </schema>
+    <schema id="28" parent="1" name="MDSYS">
+      <ObjectId>90</ObjectId>
+    </schema>
+    <schema id="29" parent="1" name="OLAPSYS">
+      <ObjectId>93</ObjectId>
+    </schema>
+    <schema id="30" parent="1" name="MDDATA">
+      <ObjectId>96</ObjectId>
+    </schema>
+    <schema id="31" parent="1" name="SPATIAL_CSW_ADMIN_USR">
+      <ObjectId>98</ObjectId>
+    </schema>
+    <schema id="32" parent="1" name="FLOWS_FILES">
+      <ObjectId>101</ObjectId>
+    </schema>
+    <schema id="33" parent="1" name="APEX_PUBLIC_USER">
+      <ObjectId>102</ObjectId>
+    </schema>
+    <schema id="34" parent="1" name="APEX_050000">
+      <ObjectId>103</ObjectId>
+    </schema>
+    <schema id="35" parent="1" name="SYSBACKUP">
+      <ObjectId>2147483617</ObjectId>
+    </schema>
+    <schema id="36" parent="1" name="SYSDG">
+      <ObjectId>2147483618</ObjectId>
+    </schema>
+    <schema id="37" parent="1" name="SYSKM">
+      <ObjectId>2147483619</ObjectId>
+    </schema>
+    <schema id="38" parent="1" name="SYSRAC">
+      <ObjectId>2147483620</ObjectId>
+    </schema>
+    <schema id="39" parent="1" name="XS$NULL">
+      <ObjectId>2147483638</ObjectId>
+    </schema>
+    <sequence id="40" parent="2" name="MANAG">
+      <ObjectId>76364</ObjectId>
+      <CreatedTimestamp>2018-06-22.23:02:59</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-22.23:02:59</ModifiedTimestamp>
+      <SequenceIdentity>1</SequenceIdentity>
+    </sequence>
+    <table id="41" parent="2" name="ATTRIBUTE">
+      <ObjectId>76307</ObjectId>
+      <CreatedTimestamp>2018-06-20.20:22:52</CreatedTimestamp>
+      <ModifiedTimestamp>2018-07-09.16:21:31</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="42" parent="2" name="AUTOMOBILE">
+      <ObjectId>76303</ObjectId>
+      <CreatedTimestamp>2018-06-20.20:07:26</CreatedTimestamp>
+      <ModifiedTimestamp>2018-07-09.16:46:38</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="43" parent="2" name="CUSTOMER">
+      <ObjectId>76311</ObjectId>
+      <CreatedTimestamp>2018-06-20.20:31:39</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-22.22:29:37</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="44" parent="2" name="EQUIPMENT">
+      <ObjectId>76305</ObjectId>
+      <CreatedTimestamp>2018-06-20.20:19:11</CreatedTimestamp>
+      <ModifiedTimestamp>2018-07-09.18:40:29</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="45" parent="2" name="MANAGER">
+      <ObjectId>76365</ObjectId>
+      <CreatedTimestamp>2018-06-22.23:05:16</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-22.23:29:56</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="46" parent="2" name="PURCHASE">
+      <ObjectId>76313</ObjectId>
+      <CreatedTimestamp>2018-06-20.20:37:16</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-22.22:52:46</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <column id="47" parent="41" name="ID_ATTRIBUTE">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="48" parent="41" name="NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <index id="49" parent="41" name="SYS_C0010658">
+      <ObjectId>76308</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-06-20.20:22:52</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-20.20:22:52</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID_ATTRIBUTE</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="50" parent="41" name="SYS_C0010658">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-06-20.20:22:52</ModifiedTimestamp>
+      <ColNames>ID_ATTRIBUTE</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010658</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="51" parent="42" name="ID_AUTOMOBILE">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="52" parent="42" name="MODEL">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="53" parent="42" name="ENVIRONMENTAL_CLASS">
+      <Position>3</Position>
+      <DataType>VARCHAR2(10)|0</DataType>
+    </column>
+    <column id="54" parent="42" name="GEARS">
+      <Position>4</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="55" parent="42" name="DRIVE_TYPE">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="56" parent="42" name="TANK_CAPACITY">
+      <Position>6</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="57" parent="42" name="LCC">
+      <Position>7</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="58" parent="42" name="NAME">
+      <Position>8</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <index id="59" parent="42" name="SYS_C0010654">
+      <ObjectId>76304</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-06-20.20:07:26</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-20.20:07:26</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID_AUTOMOBILE</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="60" parent="42" name="SYS_C0010654">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-06-20.20:07:26</ModifiedTimestamp>
+      <ColNames>ID_AUTOMOBILE</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010654</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="61" parent="43" name="ID_CLIENT">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="62" parent="43" name="FULL_NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR2(50)|0</DataType>
+    </column>
+    <column id="63" parent="43" name="PASSPORT">
+      <Position>3</Position>
+      <DataType>NUMBER(10)|0</DataType>
+    </column>
+    <column id="64" parent="43" name="PHONE">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="65" parent="43" name="EMAIL">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <index id="66" parent="43" name="SYS_C0010664">
+      <ObjectId>76312</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-06-20.20:31:39</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-20.20:31:39</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID_CLIENT</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="67" parent="43" name="SYS_C0010664">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-06-20.20:31:39</ModifiedTimestamp>
+      <ColNames>ID_CLIENT</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010664</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="68" parent="44" name="ID_EQUIPMENT">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="69" parent="44" name="ID_AUTOMOBILE">
+      <Position>2</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="70" parent="44" name="ID_ATTRIBUTE">
+      <Position>3</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="71" parent="44" name="VALUE">
+      <Position>4</Position>
+      <DataType>VARCHAR2(45)|0</DataType>
+    </column>
+    <index id="72" parent="44" name="SYS_C0010656">
+      <ObjectId>76306</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-06-20.20:19:11</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-20.20:19:11</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID_EQUIPMENT</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="73" parent="44" name="SYS_C0010656">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-06-20.20:19:11</ModifiedTimestamp>
+      <ColNames>ID_EQUIPMENT</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010656</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="74" parent="44" name="EQUIPMENT_AUTOMOBILE_ID_AUTOMOBILE_FK">
+      <ModifiedTimestamp>2018-07-09.18:40:29</ModifiedTimestamp>
+      <ColNames>ID_AUTOMOBILE</ColNames>
+      <RefSchemaName>CAR</RefSchemaName>
+      <RefTableName>AUTOMOBILE</RefTableName>
+      <RefKeyName>SYS_C0010654</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="75" parent="44" name="EQUIPMENT_ATTRIBUTE_ID_ATTRIBUTE_FK">
+      <ModifiedTimestamp>2018-07-09.18:40:29</ModifiedTimestamp>
+      <ColNames>ID_ATTRIBUTE</ColNames>
+      <RefSchemaName>CAR</RefSchemaName>
+      <RefTableName>ATTRIBUTE</RefTableName>
+      <RefKeyName>SYS_C0010658</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="76" parent="45" name="ID_MANAGER">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="77" parent="45" name="FULL_NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR2(50)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="78" parent="45" name="SALARY">
+      <Position>3</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="79" parent="45" name="EMP_DATE">
+      <Position>4</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="80" parent="45" name="PHONE">
+      <Position>5</Position>
+      <DataType>VARCHAR2(10)|0</DataType>
+    </column>
+    <index id="81" parent="45" name="SYS_C0010675">
+      <ObjectId>76366</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-06-22.23:05:18</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-22.23:05:18</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID_MANAGER</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="82" parent="45" name="SYS_C0010675">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-06-22.23:05:18</ModifiedTimestamp>
+      <ColNames>ID_MANAGER</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010675</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <trigger id="83" parent="45" name="ID_MAN">
+      <ObjectId>76367</ObjectId>
+      <DependsOnIds>143,76364</DependsOnIds>
+      <CreatedTimestamp>2018-06-22.23:08:22</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-22.23:08:22</ModifiedTimestamp>
+      <Events>I</Events>
+      <Turn>before-row</Turn>
+    </trigger>
+    <column id="84" parent="46" name="ID_PURCHASE">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="85" parent="46" name="ID_AUTOMOBILE">
+      <Position>2</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="86" parent="46" name="ID_CLIENT">
+      <Position>3</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="87" parent="46" name="DATE">
+      <Position>4</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="88" parent="46" name="PAYMENT">
+      <Position>5</Position>
+      <DataType>VARCHAR2(10)|0</DataType>
+    </column>
+    <index id="89" parent="46" name="SYS_C0010666">
+      <ObjectId>76314</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-06-20.20:37:16</CreatedTimestamp>
+      <ModifiedTimestamp>2018-06-20.20:37:16</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID_PURCHASE</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="90" parent="46" name="SYS_C0010666">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-06-20.20:37:16</ModifiedTimestamp>
+      <ColNames>ID_PURCHASE</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010666</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="91" parent="46" name="PURCHASE_AUTOMOBILE_ID_AUTOMOBILE_FK">
+      <ModifiedTimestamp>2018-06-20.20:38:54</ModifiedTimestamp>
+      <ColNames>ID_AUTOMOBILE</ColNames>
+      <RefSchemaName>CAR</RefSchemaName>
+      <RefTableName>AUTOMOBILE</RefTableName>
+      <RefKeyName>SYS_C0010654</RefKeyName>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="92" parent="46" name="PURCHASE_CLIENT_ID_CLIENT_FK">
+      <ModifiedTimestamp>2018-06-20.20:38:54</ModifiedTimestamp>
+      <ColNames>ID_CLIENT</ColNames>
+      <RefSchemaName>CAR</RefSchemaName>
+      <RefTableName>CUSTOMER</RefTableName>
+      <RefKeyName>SYS_C0010664</RefKeyName>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+  </database-model>
+</dataSource>

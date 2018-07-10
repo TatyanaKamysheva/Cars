@@ -1,0 +1,24 @@
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.8.0//EN"
+        "http://gwtproject.org/doctype/2.8.0/gwt-module.dtd">
+<module rename-to="MySampleApplication">
+
+    <!-- Inherit the core Web Toolkit stuff.                  -->
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name="org.fusesource.restygwt.RestyGWT"/>
+    <inherits name="com.google.gwt.logging.Logging"/>
+    <inherits name="com.google.gwt.http.HTTP"/>
+    <inherits name="com.google.gwt.json.JSON"/>
+
+
+    <!-- Specify the app entry point class.                   -->
+    <entry-point class='com.mySampleApplication.client.Main'/>
+
+
+    <!-- Specify the app servlets.                   -->
+    <!--<servlet path='/MySampleApplicationService' class='com.mySampleApplication.server.MySampleApplicationServiceImpl'/>-->
+    <servlet path="/MySampleApplicationService" class="com.mySampleApplication.client.Controller"/>
+    <source path="shared"></source>
+    <source path="client"></source>
+    <source path="server"></source>
+
+</module>
