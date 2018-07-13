@@ -1,35 +1,42 @@
-package com.mySampleApplication.server;
+package com.cars.server.dao;
 
-import com.mySampleApplication.shared.Manager;
+import com.cars.shared.models.Manager;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
-public class ManagerDAO {
+public class ManagerDAO<T> {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     private static final Logger logger = Logger.getLogger(ManagerDAO.class);
 
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Manager> listManagers() {
+    public void save(T t){
         Session session = this.sessionFactory.getCurrentSession();
-        List<Manager> managerList = session.createQuery("SELECT manager FROM Manager manager").list();
-        for (Manager manager : managerList) {
-            logger.info("List:" + manager);
-        }
-        return managerList;
+        session.save(t);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> list(String className) {
+        Session session = this.sessionFactory.getCurrentSession();
+        //List<T> list = session.createQuery("from Manager").list();
+        logger.info(className);
+        List<T> list = session.createQuery("from "+className).list();
+        return list;
     }
 }
 
