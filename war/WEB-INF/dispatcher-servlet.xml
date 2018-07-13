@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="com.mySampleApplication.client"/>
+    <context:component-scan base-package="com.cars.client.controller"/>
 
     <mvc:annotation-driven/>
     <bean
@@ -36,7 +36,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="annotatedClasses">
             <list>
-                <value>com.mySampleApplication.shared.Manager</value>
+                <value>com.cars.shared.models.Manager</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -45,6 +45,8 @@
                 <prop key="connection.driver_class">oracle.jdbc.driver.OracleDriver</prop>
                 <prop key="connection.url">jdbc:oracle:thin:@localhost:1521:car</prop>
                 <prop key="hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.default_schema">CAR</prop>
             </props>
         </property>
     </bean>
@@ -52,8 +54,12 @@
     <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
-    <bean class="com.mySampleApplication.server.ManagerDAO" id="managerDAO">
+    <bean class="com.cars.server.dao.DAO" id="managerDAO">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean class="com.cars.server.service.ManagerService" id="managerService">
+        <property name="DAO" ref="managerDAO"/>
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

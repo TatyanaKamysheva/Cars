@@ -5,7 +5,7 @@
          version="4.0">
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/annotationContext.xml</param-value>
+        <param-value>/WEB-INF/context.xml</param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -21,7 +21,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
-        <url-pattern>/MySampleApplication/service/*</url-pattern>
+        <url-pattern>/cars/service/*</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>Main.html</welcome-file>
