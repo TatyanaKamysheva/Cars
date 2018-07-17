@@ -48,7 +48,7 @@
                 <prop key="connection.url">jdbc:oracle:thin:@localhost:1521:car</prop>
                 <prop key="hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.default_schema">CAR</prop>
+                <!-- <prop key="hibernate.default_schema">CAR</prop>-->
             </props>
         </property>
     </bean>
