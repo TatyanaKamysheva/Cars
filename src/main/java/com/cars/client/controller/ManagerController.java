@@ -8,16 +8,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @ImportResource("/WEB-INF/dispatcher-servlet.xml")
 @RestController
 public class ManagerController {
-    Logger logger = Logger.getLogger(ManagerController.class);
+
+    private Logger logger = Logger.getLogger(ManagerController.class);
 
     @Autowired
     private ManagerService managerService;
@@ -28,20 +25,37 @@ public class ManagerController {
         this.managerService = managerService;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(value = "/manager/list", method = RequestMethod.GET)
     public @ResponseBody
-    List<Manager> list(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    List<Manager> list() {
+        logger.info("Controller");
         return this.managerService.listManagers();
     }
 
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST, headers = "Accept=application/json")
-    public void save(@RequestBody Manager manager)
-            throws ServletException, IOException {
-        this.managerService.save(manager);
-
+    @RequestMapping(value = "/manager/save", method = RequestMethod.POST)
+    @ResponseBody
+    public void save(@RequestBody Manager manager) {
+        if (manager.getIdManager() == null) {
+            this.managerService.save(manager);
+        } else
+            this.managerService.update(manager);
 
     }
+
+    @RequestMapping(value = "/manager/delete", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void delete(@RequestBody Integer id) {
+        logger.info(id + " - deleting...");
+        this.managerService.delete(id);
+    }
+
+
+    /*public Manager jsonToObject(String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Manager object = objectMapper.readValue(json, Manager.class);
+        return object;
+    }*/
 
 }

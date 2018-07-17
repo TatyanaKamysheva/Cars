@@ -11,5 +11,6 @@
     <property name="hbm2ddl.auto">update</property>
     <property name="hibernate.show_sql">true</property>
     <mapping class="com.cars.shared.models.Manager"/>
+      <mapping class="com.cars.shared.models.Customer"/>
   </session-factory>
 </hibernate-configuration>

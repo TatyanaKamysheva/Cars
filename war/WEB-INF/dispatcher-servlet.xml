@@ -37,6 +37,8 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.cars.shared.models.Manager</value>
+                <value>com.cars.shared.models.Customer</value>
+                <value>com.cars.shared.models.Automobile</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -54,12 +56,27 @@
     <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
-    <bean class="com.cars.server.dao.DAO" id="managerDAO">
+
+    <!--DAO-->
+    <bean class="com.cars.server.dao.ManagerDAO" id="managerDAO">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+    <bean class="com.cars.server.dao.CustomerDAO" id="customerDAO">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+    <bean class="com.cars.server.dao.AutomobileDAO" id="automobileDAO">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 
+    <!-- Service-->
     <bean class="com.cars.server.service.ManagerService" id="managerService">
-        <property name="DAO" ref="managerDAO"/>
+        <property name="managerDAO" ref="managerDAO"/>
+    </bean>
+    <bean class="com.cars.server.service.CustomerService" id="customerService">
+        <property name="customerDAO" ref="customerDAO"/>
+    </bean>
+    <bean class="com.cars.server.service.AutomobileService" id="automobileService">
+        <property name="automobileDAO" ref="automobileDAO"/>
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
