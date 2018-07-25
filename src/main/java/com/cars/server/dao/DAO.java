@@ -4,40 +4,76 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
-public class DAO<T> {
 
-    @Autowired
-    public SessionFactory sessionFactory;
+@Transactional(readOnly = true, value = "transactionManager")
+public abstract class DAO<E, I extends Serializable> {
 
-    private static final Logger logger = Logger.getLogger(DAO.class);
+    protected Class<E> entityClass;
+    private Logger logger = Logger.getLogger(DAO.class);
+    private SessionFactory sessionFactory;
 
-    @Autowired
+    public DAO() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public DAO(Class<E> entityClass) {
+        this.entityClass = entityClass;
+    }
+
+    @Autowired()
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(T t) {
-        Session session = this.sessionFactory.getCurrentSession();
-        logger.info(t.toString());
-        session.save(t);
+    public Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
     }
 
-    public void delete(Integer id) {
+
+    @Transactional
+    public void save(E entity) {
+        getCurrentSession().save(entity);
+        logger.info(entity.toString() + "  saved");
+        getCurrentSession().flush();
+    }
+
+    public E findById(I id) {
+        logger.info("Find entity with id.." + id);
+        return (E) getCurrentSession().get(entityClass, id);
+    }
+
+    @Transactional
+    public E update(E entity) {
+        getCurrentSession().update(entity);
+        logger.info(entity.toString() + " updated");
+        getCurrentSession().flush();
+        return entity;
+    }
+
+    @Transactional
+    public void delete(E entity) {
+        getCurrentSession().delete(entity);
+        logger.info(entity.toString() + " deleted!");
+    }
+
+    public void refresh(E entity) {
+        getCurrentSession().refresh(entity);
     }
 
     @SuppressWarnings("unchecked")
-    public List<T> list() {
-        return new ArrayList<>();
-    }
-
-    public void update(T t) {
-        logger.info((t.toString()));
+    public List<E> getAll() {
         Session session = this.sessionFactory.getCurrentSession();
-        session.update(t);
+        List<E> list = (List<E>) session.createQuery("from " + entityClass.getSimpleName()).list();
+        for (E object : list) {
+            logger.info("Getting " + object.toString());
+        }
+        return list;
     }
 }
+
 

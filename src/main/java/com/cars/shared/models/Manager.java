@@ -1,34 +1,31 @@
 package com.cars.shared.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 
 @Entity
-@Embeddable
 @Table(name = "MANAGER")
 public class Manager implements Serializable {
 
-    private Long idManager;
-    private String fullName;
-    private Long salary;
-    private String phone;
-
-    public Manager() {
-    }
-
-    public Manager(Long idManager, String fullName, Long salary, String phone) {
-        this.idManager = idManager;
-        this.fullName = fullName;
-        this.salary = salary;
-        this.phone = phone;
-    }
-
-
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    @JsonIgnore
+    User user;
     @Id
     @Column(name = "ID_MANAGER")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "MANAG")
     @SequenceGenerator(name = "MANAG", sequenceName = "MANAG")
+    private Long idManager;
+    @Column(name = "FULL_NAME")
+    private String fullName;
+    @Column(name = "SALARY")
+    private Long salary;
+    @Column(name = "PHONE")
+    private String phone;
+
     public Long getIdManager() {
         return idManager;
     }
@@ -37,8 +34,7 @@ public class Manager implements Serializable {
         this.idManager = idManager;
     }
 
-    @Basic
-    @Column(name = "FULL_NAME")
+
     public String getFullName() {
         return fullName;
     }
@@ -47,8 +43,7 @@ public class Manager implements Serializable {
         this.fullName = fullName;
     }
 
-    @Basic
-    @Column(name = "SALARY")
+
     public Long getSalary() {
         return salary;
     }
@@ -57,8 +52,6 @@ public class Manager implements Serializable {
         this.salary = salary;
     }
 
-    @Basic
-    @Column(name = "PHONE")
     public String getPhone() {
         return phone;
     }
@@ -70,5 +63,24 @@ public class Manager implements Serializable {
     public String toString() {
         return "{\"idManager\":" + idManager + ", \"fullName\":\"" + fullName +
                 "\", \"salary\":" + salary + ", \"phone\":\"" + phone + "\"}";
+    }
+
+    @Column(name = "ROLE")
+    private String role;
+
+    public Manager() {
+    }
+
+    public Manager(String fullName, String role) {
+        this.fullName = fullName;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

@@ -1,7 +1,13 @@
 package com.cars.server.dao;
 
+import com.cars.shared.models.Purchase;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class PurchaseDAO extends DAO<PurchaseDAO> {
+
+@Repository("purchaseDAO")
+public class PurchaseDAO extends DAO<Purchase, Long> {
+    public PurchaseDAO() {
+        super(Purchase.class);
+    }
 }
+

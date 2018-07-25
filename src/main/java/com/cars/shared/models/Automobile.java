@@ -1,63 +1,45 @@
 package com.cars.shared.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Embeddable
 @Table(name = "AUTOMOBILE")
-public class Automobile {
-    private long idAutomobile;
+public class Automobile implements Serializable {
+
+    @Id
+    @Column(name = "ID_AUTOMOBILE")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "AUTOM")
+    @SequenceGenerator(name = "AUTOM", sequenceName = "AUTOM")
+    private Long idAutomobile;
+
+    @Column(name = "MODEL")
     private String model;
+
+    @Column(name = "NAME")
     private String name;
-    private int gears;
+
+    @Column(name = "GEARS")
+    private Long gears;
+
+    @Column(name = "DRIVE_TYPE")
     private String drive_type;
-    private int tank_capacity;
 
 
-    public Automobile() {
-    }
-
-    public Automobile(long idAutomobile, String model, String name, int gears, String drive_type, int tank_capacity) {
-        this.idAutomobile = idAutomobile;
+    public Automobile(String model, String name, Long gears, String drive_type) {
         this.model = model;
         this.name = name;
         this.gears = gears;
         this.drive_type = drive_type;
-        this.tank_capacity = tank_capacity;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Automobile that = (Automobile) o;
-        return idAutomobile == that.idAutomobile &&
-                gears == that.gears &&
-                tank_capacity == that.tank_capacity &&
-                Objects.equals(model, that.model) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(drive_type, that.drive_type);
+    public Automobile() {
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(idAutomobile, model, name, gears, drive_type, tank_capacity);
-    }
-
-    @Id
-    @Column(name = "ID_AUTOMOBILE")
-    public long getIdAutomobile() {
-        return idAutomobile;
-    }
-
-    public void setIdAutomobile(long idAutomobile) {
-        this.idAutomobile = idAutomobile;
-    }
-
-    @Basic
-    @Column(name = "MODEL")
     public String getModel() {
         return model;
     }
@@ -66,8 +48,6 @@ public class Automobile {
         this.model = model;
     }
 
-    @Basic
-    @Column(name = "NAME")
     public String getName() {
         return name;
     }
@@ -76,18 +56,14 @@ public class Automobile {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "GEARS")
-    public int getGears() {
-        return gears;
+    public Long getIdAutomobile() {
+        return idAutomobile;
     }
 
-    public void setGears(int gears) {
-        this.gears = gears;
+    public void setIdAutomobile(Long idAutomobile) {
+        this.idAutomobile = idAutomobile;
     }
 
-    @Basic
-    @Column(name = "DRIVE_TYPE")
     public String getDrive_type() {
         return drive_type;
     }
@@ -96,13 +72,23 @@ public class Automobile {
         this.drive_type = drive_type;
     }
 
-    @Basic
-    @Column(name = "TANK_CAPACITY")
-    public int getTank_capacity() {
-        return tank_capacity;
+    public Long getGears() {
+        return gears;
     }
 
-    public void setTank_capacity(int tank_capacity) {
-        this.tank_capacity = tank_capacity;
+    public void setGears(Long gears) {
+        this.gears = gears;
+    }
+
+    @Override
+    public String toString() {
+        return "Automobile{" +
+                "idAutomobile=" + idAutomobile +
+                ", model='" + model + '\'' +
+                ", name='" + name + '\'' +
+                ", gears=" + gears +
+                ", drive_type='" + drive_type +
+                '}';
+
     }
 }

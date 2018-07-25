@@ -1,8 +1,5 @@
 package com.cars.shared.models;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.fusesource.restygwt.client.Json;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,24 +8,15 @@ import java.util.Objects;
 @Embeddable
 @Table(name = "CUSTOMER")
 public class Customer implements Serializable {
-    @Json(name = "idCustomer")
-    @JsonProperty("idCustomer")
-    private long idCustomer;
 
-    @Json(name = "fullName")
-    @JsonProperty("fullName")
+    private Long idCustomer;
+
     private String fullName;
 
-    @Json(name = "passport")
-    @JsonProperty("passport")
     private Long passport;
 
-    @Json(name = "phone")
-    @JsonProperty("phone")
     private String phone;
 
-    @Json(name = "email")
-    @JsonProperty("email")
     private String email;
 
     public Customer() {
@@ -43,14 +31,20 @@ public class Customer implements Serializable {
     }
 
 
-    @Id
-    @Column(name = "ID_CLIENT")
-    public long getIdCustomer() {
-        return idCustomer;
+    public Customer(Long idCustomer, String fullName, Long passport, String phone, String email) {
+        this.idCustomer = idCustomer;
+        this.fullName = fullName;
+        this.passport = passport;
+        this.phone = phone;
+        this.email = email;
     }
 
-    public void setIdCustomer(long idCustomer) {
-        this.idCustomer = idCustomer;
+    @Id
+    @Column(name = "ID_CLIENT")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "CUSTOM")
+    @SequenceGenerator(name = "CUSTOM", sequenceName = "CUSTOM")
+    public Long getIdCustomer() {
+        return idCustomer;
     }
 
     @Basic
@@ -93,10 +87,8 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-
-    public String toJsonString() {
-        return "{\"idCustomer\":" + idCustomer + ", \"fullName\":\"" + fullName +
-                "\", \"passport\":" + passport + ", \"phone\":\"" + phone + "\"}";
+    public void setIdCustomer(Long idCustomer) {
+        this.idCustomer = idCustomer;
     }
 
 
@@ -116,5 +108,10 @@ public class Customer implements Serializable {
     public int hashCode() {
 
         return Objects.hash(idCustomer, fullName, passport, phone, email);
+    }
+
+    public String toString() {
+        return "{\"idCustomer\":" + idCustomer + ", \"fullName\":\"" + fullName +
+                "\", \"passport\":" + passport + ", \"phone\":\"" + phone + "\", \"email\":\"" + email + "\"}";
     }
 }
