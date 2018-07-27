@@ -1,7 +1,9 @@
 package com.cars.client.view;
 
 import com.cars.client.rest.GWTService;
-import com.cars.shared.models.Purchase;
+import com.cars.client.view.listboxes.AutomobileListBox;
+import com.cars.client.view.listboxes.CustomerListBox;
+import com.cars.shared.models.*;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -14,6 +16,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
+import java.util.Date;
 import java.util.List;
 
 public class PurchaseView extends Composite {
@@ -28,37 +31,22 @@ public class PurchaseView extends Composite {
     private CellTable<Purchase> table = new CellTable<>();
     private ListDataProvider<Purchase> dataProvider = new ListDataProvider<>();
     private List<Purchase> list = dataProvider.getList();
-    //Table columns
-    private TextColumn<Purchase> idColumn = new TextColumn<Purchase>() {
-        @Override
-        public String getValue(Purchase object) {
-            return String.valueOf(object.getIdCustomer());
-        }
-    };
+    VerticalPanel panel = new VerticalPanel();
     private TextColumn<Purchase> dateColumn = new TextColumn<Purchase>() {
         @Override
         public String getValue(Purchase object) {
             return object.getDate().toString();
         }
     };
-    private TextColumn<Purchase> paymentColumn = new TextColumn<Purchase>() {
-        @Override
-        public String getValue(Purchase object) {
-            return object.getPayment();
-        }
-    };
+    Manager manager = new Manager();
     private TextColumn<Purchase> autoColumn = new TextColumn<Purchase>() {
         @Override
         public String getValue(Purchase object) {
             return object.getIdAutomobile().getModel() + object.getIdAutomobile().getName();
         }
     };
-    private TextColumn<Purchase> customerColumn = new TextColumn<Purchase>() {
-        @Override
-        public String getValue(Purchase object) {
-            return object.getIdCustomer().getFullName();
-        }
-    };
+    Grid grid = new Grid(7, 2);
+    AutomobileListBox automobile = new AutomobileListBox();
     private ButtonCell buttonCell = new ButtonCell();
     private Column<Purchase, String> editColumn = new Column<Purchase, String>(buttonCell) {
         @Override
@@ -78,43 +66,94 @@ public class PurchaseView extends Composite {
     private Label idLabel = new Label("ID");
     private Label autoLabel = new Label("Automobile");
     private Label customerLabel = new Label("Customer");
-    private Label dateLabel = new Label("Date");
-    private Label payLabel = new Label("Payment");
+    CustomerListBox customer = new CustomerListBox();
+    Label modificationLabel = new Label("Modification");
+    Label infoLabel = new Label("");
+    UserLoginInfo userLoginInfo = new UserLoginInfo();
+    //Table columns
+    private TextColumn<Purchase> idColumn = new TextColumn<Purchase>() {
+        @Override
+        public String getValue(Purchase object) {
+            return String.valueOf(object.getIdPurchase());
+        }
+    };
+    private TextColumn<Purchase> modificationColumn = new TextColumn<Purchase>() {
+        @Override
+        public String getValue(Purchase object) {
+            return object.getModification();
+        }
+    };
+    private TextColumn<Purchase> customerColumn = new TextColumn<Purchase>() {
+        @Override
+        public String getValue(Purchase object) {
+            return object.getIdCustomer().getFirstName() + " " + object.getIdCustomer().getSurname();
+        }
+    };
+    private TextColumn<Purchase> mangerColumn = new TextColumn<Purchase>() {
+        @Override
+        public String getValue(Purchase object) {
+            return object.getIdManager().getSurname();
+        }
+    };
+    // private Label dateLabel = new Label("Date");
+    private Label payLabel = new Label("Modification");
 
-
-    PurchaseView(Panel panel) {
+    //private DateTimeFormat dateTimeFormat=new DateTimeFormat("yyyy");
+    PurchaseView(UserLoginInfo userLoginInfo) {
+        setAuto();
+        setCustomer();
+        this.userLoginInfo = userLoginInfo;
+        RootPanel.get().add(panel);
         table.addColumn(idColumn, "ID");
         table.addColumn(autoColumn, "Automobile");
         table.addColumn(customerColumn, "Customer");
+        table.addColumn(mangerColumn, "Manager");
         table.addColumn(dateColumn, "Date");
-        table.addColumn(paymentColumn, "Payment");
-        table.addColumn(editColumn, "Edit");
-        table.addColumn(deleteColumn, "Delete");
-        panel.add(idLabel);
+        //table.addColumn(modificationColumn, "Modification");
+        switch (userLoginInfo.getRole()) {
+            case Admin:
+                table.addColumn(editColumn, "Edit");
+                table.addColumn(deleteColumn, "Delete");
+                break;
+        }
+    }
+
+    void init() {
+        grid.setCellSpacing(10);
         id.setEnabled(false);
-        panel.add(id);
+       /* setAuto();
+        setCustomer();*/
+        grid.setWidget(0, 0, idLabel);
+        grid.setWidget(0, 1, id);
+        grid.setWidget(1, 0, customerLabel);
+        grid.setWidget(1, 1, customer);
+        grid.setWidget(2, 0, autoLabel);
+        grid.setWidget(2, 1, automobile);
+        grid.setWidget(3, 0, addButton);
+        grid.setWidget(3, 1, infoLabel);
 
-        panel.add(addButton);
-
+        panel.add(grid);
+        panel.add(table);
         refreshTable();
         dataProvider.addDataDisplay(table);
-        panel.add(table);
-        panel.add(label);
-
-       /* addButton.addClickHandler(event -> {
-            Customer customer = new Customer();
+        getManager();
+        addButton.addClickHandler(event -> {
+            Purchase purchase = new Purchase();
             if (!addButton.getText().equals("Add")) {
-                customer.setIdCustomer(Long.valueOf(id.getText()));
+                purchase.setIdPurchase(Long.valueOf(id.getText()));
             }
-            customer.setFullName(name.getText());
-            customer.setPassport(Long.valueOf(passport.getText()));
-            customer.setPhone(phone.getText());
-            customer.setEmail(email.getText());
-            if (addButton.getText().equals("Add")) {
 
-                restService.saveCustomer(customer, new MethodCallback<Void>() {
+            purchase.setIdManager(this.manager);
+            purchase.setIdAutomobile(automobile.getSelected());
+            purchase.setIdCustomer(customer.getSelected());
+            Date date = new Date();
+            purchase.setDate(date);
+            purchase.setModification("Comfort");
+            if (addButton.getText().equals("Add")) {
+                restService.savePurchase(purchase, new MethodCallback<Void>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
+                        Window.alert("Fail to save");
                     }
 
                     @Override
@@ -123,10 +162,10 @@ public class PurchaseView extends Composite {
                     }
                 });
             } else {
-                restService.updateCustomer(customer, new MethodCallback<Void>() {
+                restService.updatePurchase(purchase, new MethodCallback<Void>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
-
+                        Window.alert("Fail to update");
                     }
 
                     @Override
@@ -136,24 +175,18 @@ public class PurchaseView extends Composite {
                 });
             }
             id.setText("");
-            name.setText("");
-            passport.setText("");
-            phone.setText("");
-            email.setText("");
+            payment.setText("");
             addButton.setText("Add");
         });
+
         editColumn.setFieldUpdater((index, object, value) ->
         {
-            id.setText(String.valueOf(object.getIdCustomer()));
+            id.setText(String.valueOf(object.getIdPurchase()));
             id.setEnabled(false);
-            name.setText(object.getFullName());
-            passport.setText(String.valueOf(object.getPassport()));
-            phone.setText(object.getPhone());
-            email.setText(object.getEmail());
             addButton.setText("Submit");
         });
         deleteColumn.setFieldUpdater(((index, object, value) -> {
-            restService.deleteCustomer(object.getIdCustomer(), new MethodCallback<Void>() {
+            restService.deletePurchase(object.getIdPurchase(), new MethodCallback<Void>() {
                 @Override
                 public void onFailure(Method method, Throwable exception) {
                     Window.alert("Fail");
@@ -164,21 +197,66 @@ public class PurchaseView extends Composite {
                     refreshTable();
                 }
             });
-        }));*/
+        }));
     }
-
 
     private void refreshTable() {
         restService.listPurchase(new MethodCallback<List<Purchase>>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
-                Window.alert("Fail" + exception.getMessage());
+
+                Window.alert("Fail to get list: " + exception.getMessage());
             }
 
             @Override
             public void onSuccess(Method method, List<Purchase> response) {
-                Window.alert("Ok");
+
+                list.clear();
+                list.addAll(response);
             }
         });
     }
+
+    private void setAuto() {
+        restService.listAuto(new MethodCallback<List<Automobile>>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+
+            }
+
+            @Override
+            public void onSuccess(Method method, List<Automobile> automobiles) {
+                automobile.setAutomobiles(automobiles);
+            }
+        });
+    }
+
+    private void setCustomer() {
+        restService.listCustomer(new MethodCallback<List<Customer>>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+            }
+
+            @Override
+            public void onSuccess(Method method, List<Customer> customers) {
+                customer.setCustomers(customers);
+            }
+        });
+    }
+
+    void getManager() {
+        restService.getManager(userLoginInfo.getEmployeeId(), new MethodCallback<Manager>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+
+            }
+
+            @Override
+            public void onSuccess(Method method, Manager response) {
+                manager = response;
+            }
+        });
+    }
+
+
 }

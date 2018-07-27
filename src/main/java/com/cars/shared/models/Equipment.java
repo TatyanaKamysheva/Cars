@@ -30,10 +30,11 @@ public class Equipment implements Serializable {
     @Column(name = "NAME_MOD")
     private String nameMod;
 
-    public Equipment(Automobile idAutomobile, Attribute idAttribute, String value) {
+    public Equipment(Automobile idAutomobile, Attribute idAttribute, String value, String nameMod) {
         this.idAutomobile = idAutomobile;
         this.idAttribute = idAttribute;
         this.value = value;
+        this.nameMod = nameMod;
     }
 
     public Equipment() {

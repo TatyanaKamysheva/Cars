@@ -1,6 +1,7 @@
 package com.cars.server.controller;
 
 import com.cars.server.service.impl.LoginServiceImpl;
+import com.cars.shared.models.User;
 import com.cars.shared.models.UserLoginInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,16 @@ public class LoginController {
         return loginService.loginUser(login, password);
     }
 
+    @RequestMapping(value = "/user/get_{login}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    User getUser(@PathVariable("login") String login) {
+        return loginService.findUserByLogin(login);
+    }
+
+    @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
+    @ResponseBody
+    public void update(@RequestBody User user) {
+        this.loginService.update(user);
+    }
 }

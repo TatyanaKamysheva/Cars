@@ -45,17 +45,37 @@ public class EquipmentServiceImpl implements EquipmentService {
         return equipmentDAO.getAll();
     }
 
-    public List<AutoPopup> getComfortAttributesList(Long id) {
-        logger.info(id);
+    public List<AutoPopup> getComfortAttributesList(Long id, String modification) {
         List<AutoPopup> list = new ArrayList<>();
         AutoPopup autoPopup = new AutoPopup();
         for (Equipment e : equipmentDAO.getAll()) {
-            if (id.equals(e.getIdAutomobile()) && e.getNameMod().equals("Comfort")) {
-                autoPopup.setAttribute(e.getIdAttribute().getName());
-                autoPopup.setValue(e.getValue());
-                list.add(autoPopup);
+            if (id.compareTo(e.getIdAutomobile().getIdAutomobile()) == 0) {
+                if (e.getNameMod().equals(modification)) {
+                    autoPopup.setAttribute(e.getIdAttribute().getName());
+                    autoPopup.setValue(e.getValue());
+                    list.add(autoPopup);
+                }
             }
         }
         return list;
     }
+
+    @Override
+    public List<String> getModification(Long id) {
+        List<String> list = new ArrayList<>();
+        for (Equipment e : equipmentDAO.getAll()) {
+            if (e.getIdAutomobile().getIdAutomobile().equals(id)) {
+                if (e.getNameMod().equals("Standard")) {
+                    if (!list.contains("Standard"))
+                        list.add("Standard");
+                }
+                if (e.getNameMod().equals("Comfort")) {
+                    if (!list.contains("Comfort")) list.add("Comfort");
+                }
+            }
+        }
+        return list;
+    }
+
+
 }

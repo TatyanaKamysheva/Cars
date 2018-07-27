@@ -25,11 +25,11 @@ public class LoginServiceImpl {
             if (password.equals(passwordDB)) {
                 UserLoginInfo userLoginInfo = new UserLoginInfo();
                 userLoginInfo.setEmployeeId(user.getManager().getIdManager());
-                userLoginInfo.setEmployeeFirstName(user.getManager().getFullName());
+                userLoginInfo.setEmployeeFirstName(user.getManager().getSurname());
 
-                if (user.getManager().getRole().equals("ADMIN")) {
+                if (user.getManager().getRole().equals("Admin")) {
                     userLoginInfo.setRole(Roles.Admin);
-                } else if (user.getManager().getRole().equals("SUPERVISOR")) {
+                } else if (user.getManager().getRole().equals("Supervisor")) {
                     userLoginInfo.setRole(Roles.Supervisor);
                 } else {
                     userLoginInfo.setRole(Roles.Seller);
@@ -39,5 +39,22 @@ public class LoginServiceImpl {
         }
 
         return null;
+    }
+
+    public User findUserByLogin(String login) {
+        return userDAO.findUserByLogin(login);
+    }
+
+    public void update(User user) {
+        userDAO.update(user);
+    }
+
+    public void save(User user) {
+        logger.info("Save" + user.toString());
+        userDAO.save(user);
+    }
+
+    public void delete(Long id) {
+        userDAO.delete(userDAO.findById(id));
     }
 }

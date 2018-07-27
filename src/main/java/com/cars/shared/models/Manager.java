@@ -14,17 +14,34 @@ public class Manager implements Serializable {
     @PrimaryKeyJoinColumn
     @JsonIgnore
     User user;
+
     @Id
     @Column(name = "ID_MANAGER")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "MANAG")
     @SequenceGenerator(name = "MANAG", sequenceName = "MANAG")
     private Long idManager;
-    @Column(name = "FULL_NAME")
-    private String fullName;
+    @Column(name = "SURNAME")
+    private String surname;
     @Column(name = "SALARY")
     private Long salary;
     @Column(name = "PHONE")
     private String phone;
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+    @Column(name = "ROLE_M")
+    private String role;
+
+    public Manager() {
+    }
+
+    public Manager(User user, String surname, Long salary, String phone, String firstName, String role) {
+        this.user = user;
+        this.surname = surname;
+        this.salary = salary;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.role = role;
+    }
 
     public Long getIdManager() {
         return idManager;
@@ -34,15 +51,13 @@ public class Manager implements Serializable {
         this.idManager = idManager;
     }
 
-
-    public String getFullName() {
-        return fullName;
+    public User getUser() {
+        return user;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setUser(User user) {
+        this.user = user;
     }
-
 
     public Long getSalary() {
         return salary;
@@ -60,20 +75,12 @@ public class Manager implements Serializable {
         this.phone = phone;
     }
 
-    public String toString() {
-        return "{\"idManager\":" + idManager + ", \"fullName\":\"" + fullName +
-                "\", \"salary\":" + salary + ", \"phone\":\"" + phone + "\"}";
+    public String getSurname() {
+        return surname;
     }
 
-    @Column(name = "ROLE")
-    private String role;
-
-    public Manager() {
-    }
-
-    public Manager(String fullName, String role) {
-        this.fullName = fullName;
-        this.role = role;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getRole() {
@@ -82,5 +89,26 @@ public class Manager implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String toString() {
+        return "Manager{" +
+                "user=" + user +
+                ", idManager=" + idManager +
+                ", surname='" + surname + '\'' +
+                ", salary=" + salary +
+                ", phone='" + phone + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }

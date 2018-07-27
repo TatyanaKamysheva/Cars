@@ -22,9 +22,10 @@ public class CustomerView extends Composite {
     //Text fields
     private TextBox id = new TextBox();
     private TextBox name = new TextBox();
+    Grid grid = new Grid(6, 2);
     private TextBox passport = new TextBox();
     private TextBox phone = new TextBox();
-    private TextBox email = new TextBox();
+
     //Table
     private CellTable<Customer> table = new CellTable<>();
     private ListDataProvider<Customer> dataProvider = new ListDataProvider<>();
@@ -36,10 +37,12 @@ public class CustomerView extends Composite {
             return String.valueOf(object.getIdCustomer());
         }
     };
-    private TextColumn<Customer> nameColumn = new TextColumn<Customer>() {
+    private TextBox surname = new TextBox();
+    private TextColumn<Customer> firstnameColumn = new TextColumn<Customer>() {
         @Override
         public String getValue(Customer object) {
-            return object.getFullName();
+            return object.getFirstName();
+
         }
     };
     private TextColumn<Customer> passportColumn = new TextColumn<Customer>() {
@@ -54,12 +57,7 @@ public class CustomerView extends Composite {
             return object.getPhone();
         }
     };
-    private TextColumn<Customer> emailColumn = new TextColumn<Customer>() {
-        @Override
-        public String getValue(Customer object) {
-            return object.getEmail();
-        }
-    };
+
     private ButtonCell buttonCell = new ButtonCell();
     private Column<Customer, String> editColumn = new Column<Customer, String>(buttonCell) {
         @Override
@@ -77,18 +75,26 @@ public class CustomerView extends Composite {
     };
     //Labels
     private Label idLabel = new Label("ID");
-    private Label nameLabel = new Label("Full name");
+    private TextColumn<Customer> surnameColumn = new TextColumn<Customer>() {
+        @Override
+        public String getValue(Customer object) {
+            return object.getSurname();
+
+        }
+    };
+    private Label nameLabel = new Label("First name");
     private Label passportLabel = new Label("Passport");
     private Label phoneLabel = new Label("Phone");
-    private Label emailLabel = new Label("Email");
+    private Label surnameLabel = new Label("Surname");
+    private Label infoLabel = new Label("");
 
     CustomerView() {
         RootPanel.get().add(panel);
         table.addColumn(idColumn, "ID");
-        table.addColumn(nameColumn, "Name");
+        table.addColumn(firstnameColumn, "First name");
+        table.addColumn(surnameColumn, "Surname");
         table.addColumn(passportColumn, "Passport");
         table.addColumn(phoneColumn, "Phone");
-        table.addColumn(emailColumn, "Email");
         table.addColumn(editColumn, "Edit");
         table.addColumn(deleteColumn, "Delete");
     }
@@ -97,6 +103,7 @@ public class CustomerView extends Composite {
         restService.listCustomer(new MethodCallback<List<Customer>>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
+                Window.alert("Fail to get list");
             }
 
             @Override
@@ -108,24 +115,22 @@ public class CustomerView extends Composite {
     }
 
     void init() {
-
-        panel.add(idLabel);
+        grid.setCellSpacing(10);
         id.setEnabled(false);
-        panel.add(id);
+        grid.setWidget(0, 0, idLabel);
+        grid.setWidget(0, 1, id);
+        grid.setWidget(1, 0, nameLabel);
+        grid.setWidget(1, 1, name);
+        grid.setWidget(2, 0, surnameLabel);
+        grid.setWidget(2, 1, surname);
+        grid.setWidget(3, 0, passportLabel);
+        grid.setWidget(3, 1, passport);
+        grid.setWidget(4, 0, phoneLabel);
+        grid.setWidget(4, 1, phone);
+        grid.setWidget(5, 0, addButton);
+        grid.setWidget(5, 1, infoLabel);
 
-        panel.add(nameLabel);
-        panel.add(name);
-
-        panel.add(passportLabel);
-        panel.add(passport);
-
-        panel.add(phoneLabel);
-        panel.add(phone);
-
-        panel.add(emailLabel);
-        panel.add(email);
-
-        panel.add(addButton);
+        panel.add(grid);
         panel.add(table);
         refreshTable();
         dataProvider.addDataDisplay(table);
@@ -134,19 +139,44 @@ public class CustomerView extends Composite {
             if (!addButton.getText().equals("Add")) {
                 customer.setIdCustomer(Long.valueOf(id.getText()));
             }
-            customer.setFullName(name.getText());
-            customer.setPassport(Long.valueOf(passport.getText()));
-            customer.setPhone(phone.getText());
-            customer.setEmail(email.getText());
+            if (name.getText().equals("")) {
+                infoLabel.setText("Enter the name!");
+                name.setText("");
+                return;
+            } else customer.setFirstName(name.getText());
+
+            if (surname.getText().equals("")) {
+                infoLabel.setText("Enter the name!");
+                surname.setText("");
+                return;
+            } else customer.setSurname(surname.getText());
+
+            try {
+                Long.valueOf(passport.getText());
+                customer.setPassport(Long.valueOf(passport.getText()));
+
+            } catch (NumberFormatException e) {
+                infoLabel.setText("Enter the number!");
+                return;
+            }
+
+            if (phone.getText().equals("")) {
+                infoLabel.setText("Enter the phone!");
+                phone.setText("");
+                return;
+            } else customer.setPhone(phone.getText());
+
             if (addButton.getText().equals("Add")) {
 
                 restService.saveCustomer(customer, new MethodCallback<Void>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
+                        Window.alert("Fail to save customer");
                     }
 
                     @Override
                     public void onSuccess(Method method, Void response) {
+                        infoLabel.setText("");
                         refreshTable();
                     }
                 });
@@ -154,30 +184,31 @@ public class CustomerView extends Composite {
                 restService.updateCustomer(customer, new MethodCallback<Void>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
-
+                        Window.alert("Fail to update customer");
                     }
 
                     @Override
                     public void onSuccess(Method method, Void response) {
+                        infoLabel.setText("");
                         refreshTable();
                     }
                 });
             }
             id.setText("");
             name.setText("");
+            surname.setText("");
             passport.setText("");
             phone.setText("");
-            email.setText("");
             addButton.setText("Add");
         });
         editColumn.setFieldUpdater((index, object, value) ->
         {
             id.setText(String.valueOf(object.getIdCustomer()));
             id.setEnabled(false);
-            name.setText(object.getFullName());
+            name.setText(object.getFirstName());
+            surname.setText(object.getSurname());
             passport.setText(String.valueOf(object.getPassport()));
             phone.setText(object.getPhone());
-            email.setText(object.getEmail());
             addButton.setText("Submit");
         });
         deleteColumn.setFieldUpdater(((index, object, value) -> {

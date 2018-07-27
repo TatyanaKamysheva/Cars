@@ -56,22 +56,43 @@ public class AttributeView extends Composite {
     Label idLabel = new Label("ID");
     Label nameLabel = new Label("Name");
     private GWTService restService = (GWTService) GWT.create(GWTService.class);
+    VerticalPanel panel = new VerticalPanel();
+    Grid grid = new Grid(3, 2);
+    Label infoLabel = new Label("");
 
-
-    AttributeView(Panel panel) {
+    AttributeView() {
+        RootPanel.get().add(panel);
         table.addColumn(idColumn, "ID");
         table.addColumn(nameColumn, "Name");
         table.addColumn(bColumn, "Edit");
         table.addColumn(deleteColumn, "Delete");
-        panel.add(idLabel);
+    }
+
+    void refreshTable() {
+        restService.listAttributes(new MethodCallback<List<Attribute>>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+            }
+
+            @Override
+            public void onSuccess(Method method, List<Attribute> response) {
+                list.clear();
+                list.addAll(response);
+            }
+        });
+    }
+
+    void init() {
+        grid.setCellSpacing(10);
         id.setEnabled(false);
-        panel.add(id);
+        grid.setWidget(0, 0, idLabel);
+        grid.setWidget(0, 1, id);
+        grid.setWidget(1, 0, nameLabel);
+        grid.setWidget(1, 1, name);
+        grid.setWidget(2, 0, addButton);
+        grid.setWidget(2, 1, infoLabel);
 
-        panel.add(nameLabel);
-        panel.add(name);
-
-        panel.add(addButton);
-
+        panel.add(grid);
         panel.add(table);
         refreshTable();
         dataProvider.addDataDisplay(table);
@@ -130,19 +151,5 @@ public class AttributeView extends Composite {
                 }
             });
         }));
-    }
-
-    void refreshTable() {
-        restService.listAttributes(new MethodCallback<List<Attribute>>() {
-            @Override
-            public void onFailure(Method method, Throwable exception) {
-            }
-
-            @Override
-            public void onSuccess(Method method, List<Attribute> response) {
-                list.clear();
-                list.addAll(response);
-            }
-        });
     }
 }

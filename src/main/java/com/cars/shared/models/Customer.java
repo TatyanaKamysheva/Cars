@@ -2,63 +2,63 @@ package com.cars.shared.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
-@Embeddable
 @Table(name = "CUSTOMER")
 public class Customer implements Serializable {
-
-    private Long idCustomer;
-
-    private String fullName;
-
-    private Long passport;
-
-    private String phone;
-
-    private String email;
-
-    public Customer() {
-    }
-
-    public Customer(long idCustomer, String fullName, Long passport, String phone, String email) {
-        this.idCustomer = idCustomer;
-        this.fullName = fullName;
-        this.passport = passport;
-        this.phone = phone;
-        this.email = email;
-    }
-
-
-    public Customer(Long idCustomer, String fullName, Long passport, String phone, String email) {
-        this.idCustomer = idCustomer;
-        this.fullName = fullName;
-        this.passport = passport;
-        this.phone = phone;
-        this.email = email;
-    }
 
     @Id
     @Column(name = "ID_CLIENT")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "CUSTOM")
     @SequenceGenerator(name = "CUSTOM", sequenceName = "CUSTOM")
+    private Long idCustomer;
+
+    @Column(name = "SURNAME")
+    private String surname;
+
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+
+    @Column(name = "PASSPORT")
+    private Long passport;
+
+    @Column(name = "PHONE")
+    private String phone;
+
+    public Customer() {
+    }
+
+    public Customer(String surname, String firstName, Long passport, String phone) {
+        this.surname = surname;
+        this.firstName = firstName;
+        this.passport = passport;
+        this.phone = phone;
+    }
+
     public Long getIdCustomer() {
         return idCustomer;
     }
 
-    @Basic
-    @Column(name = "FULL_NAME")
-    public String getFullName() {
-        return fullName;
+    public void setIdCustomer(Long idCustomer) {
+        this.idCustomer = idCustomer;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public String getSurname() {
+        return surname;
     }
 
-    @Basic
-    @Column(name = "PASSPORT")
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public Long getPassport() {
         return passport;
     }
@@ -67,8 +67,6 @@ public class Customer implements Serializable {
         this.passport = passport;
     }
 
-    @Basic
-    @Column(name = "PHONE")
     public String getPhone() {
         return phone;
     }
@@ -77,41 +75,15 @@ public class Customer implements Serializable {
         this.phone = phone;
     }
 
-    @Basic
-    @Column(name = "EMAIL")
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setIdCustomer(Long idCustomer) {
-        this.idCustomer = idCustomer;
-    }
-
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return idCustomer == customer.idCustomer &&
-                Objects.equals(fullName, customer.fullName) &&
-                Objects.equals(passport, customer.passport) &&
-                Objects.equals(phone, customer.phone) &&
-                Objects.equals(email, customer.email);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(idCustomer, fullName, passport, phone, email);
-    }
-
     public String toString() {
-        return "{\"idCustomer\":" + idCustomer + ", \"fullName\":\"" + fullName +
-                "\", \"passport\":" + passport + ", \"phone\":\"" + phone + "\", \"email\":\"" + email + "\"}";
+        return "Customer{" +
+                "idCustomer=" + idCustomer +
+                ", surname='" + surname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", passport=" + passport +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

@@ -78,92 +78,21 @@ public class EquipmentView extends Composite {
     private Label attributeLabel = new Label("Attribute");
     private Label valueLabel = new Label("Value");
 
+    VerticalPanel panel = new VerticalPanel();
+    Label infoLabel = new Label("");
+    Grid grid = new Grid(5, 2);
 
-    EquipmentView(Panel panel) {
+    EquipmentView() {
+        setAuto();
+        setAttributes();
+        RootPanel.get().add(panel);
         table.addColumn(idColumn, "ID");
         table.addColumn(autoColumn, "Automobile");
         table.addColumn(attrColumn, "Attribute");
         table.addColumn(valueColumn, "Value");
         table.addColumn(editColumn, "Edit");
         table.addColumn(deleteColumn, "Delete");
-
-        panel.add(idLabel);
-        id.setEnabled(false);
-        panel.add(id);
-
-        panel.add(autoLabel);
-        setAuto();
-        panel.add(automobileListBox);
-
-        panel.add(attributeLabel);
-        setAttributes();
-        panel.add(attributeListBox);
-
-        panel.add(valueLabel);
-        panel.add(value);
-        panel.add(addButton);
-        refreshTable();
-        dataProvider.addDataDisplay(table);
-        panel.add(table);
-        addButton.addClickHandler(event -> {
-            Equipment equipment = new Equipment();
-            if (!addButton.getText().equals("Add")) {
-                equipment.setIdEquipment(Long.valueOf(id.getText()));
-            }
-            equipment.setValue(value.getText());
-            equipment.setIdAttribute(attributeListBox.getSelected());
-            equipment.setIdAutomobile(automobileListBox.getSelected());
-            if (addButton.getText().equals("Add")) {
-                restService.saveEquip(equipment, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
-                    }
-
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        refreshTable();
-                    }
-                });
-            } else {
-                restService.updateEquip(equipment, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        refreshTable();
-                    }
-                });
-            }
-            id.setText("");
-            value.setText("");
-            addButton.setText("Add");
-        });
-        editColumn.setFieldUpdater((index, object, valuez) ->
-        {
-            id.setText(String.valueOf(object.getIdEquipment()));
-            id.setEnabled(false);
-            value.setText(object.getValue());
-            attributeListBox.setAttribute(object.getIdAttribute());
-            addButton.setText("Submit");
-        });
-        deleteColumn.setFieldUpdater(((index, object, value) -> {
-            restService.deleteEquip(object.getIdEquipment(), new MethodCallback<Void>() {
-                @Override
-                public void onFailure(Method method, Throwable exception) {
-                    Window.alert("Fail");
-                }
-
-                @Override
-                public void onSuccess(Method method, Void response) {
-                    refreshTable();
-                }
-            });
-        }));
     }
-
 
     private void refreshTable() {
         restService.listEquip(new MethodCallback<List<Equipment>>() {
@@ -205,5 +134,83 @@ public class EquipmentView extends Composite {
                 attributeListBox.setAttributes(response);
             }
         });
+    }
+
+    void init() {
+        grid.setCellSpacing(10);
+        id.setEnabled(false);
+        grid.setWidget(0, 0, idLabel);
+        grid.setWidget(0, 1, id);
+        grid.setWidget(1, 0, autoLabel);
+        grid.setWidget(1, 1, automobileListBox);
+        grid.setWidget(2, 0, attributeLabel);
+        grid.setWidget(2, 1, attributeListBox);
+        grid.setWidget(3, 0, valueLabel);
+        grid.setWidget(3, 1, value);
+        grid.setWidget(4, 0, addButton);
+        grid.setWidget(4, 1, infoLabel);
+
+        panel.add(grid);
+        panel.add(table);
+        refreshTable();
+        dataProvider.addDataDisplay(table);
+        addButton.addClickHandler(event -> {
+            Equipment equipment = new Equipment();
+            if (!addButton.getText().equals("Add")) {
+                equipment.setIdEquipment(Long.valueOf(id.getText()));
+            }
+            equipment.setValue(value.getText());
+            equipment.setIdAttribute(attributeListBox.getSelected());
+            equipment.setIdAutomobile(automobileListBox.getSelected());
+            equipment.setNameMod("Comfort");
+            if (addButton.getText().equals("Add")) {
+                restService.saveEquip(equipment, new MethodCallback<Void>() {
+                    @Override
+                    public void onFailure(Method method, Throwable exception) {
+                    }
+
+                    @Override
+                    public void onSuccess(Method method, Void response) {
+                        refreshTable();
+                    }
+                });
+            } else {
+                restService.updateEquip(equipment, new MethodCallback<Void>() {
+                    @Override
+                    public void onFailure(Method method, Throwable exception) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Method method, Void response) {
+                        refreshTable();
+                    }
+                });
+            }
+            id.setText("");
+            value.setText("");
+            addButton.setText("Add");
+        });
+        editColumn.setFieldUpdater((index, object, valuez) ->
+        {
+            id.setText(String.valueOf(object.getIdEquipment()));
+            id.setEnabled(false);
+            value.setText(object.getValue());
+            //attributeListBox.setAttribute(object.getIdAttribute());
+            addButton.setText("Submit");
+        });
+        deleteColumn.setFieldUpdater(((index, object, value) -> {
+            restService.deleteEquip(object.getIdEquipment(), new MethodCallback<Void>() {
+                @Override
+                public void onFailure(Method method, Throwable exception) {
+                    Window.alert("Fail");
+                }
+
+                @Override
+                public void onSuccess(Method method, Void response) {
+                    refreshTable();
+                }
+            });
+        }));
     }
 }

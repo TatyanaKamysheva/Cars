@@ -39,7 +39,7 @@ public abstract class DAO<E, I extends Serializable> {
     public void save(E entity) {
         getCurrentSession().save(entity);
         logger.info(entity.toString() + "  saved");
-        getCurrentSession().flush();
+        //getCurrentSession().flush();
     }
 
     public E findById(I id) {

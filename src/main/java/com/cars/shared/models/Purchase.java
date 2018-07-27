@@ -25,21 +25,27 @@ public class Purchase {
     @JsonIgnore
     Customer idCustomer;
 
+    @ManyToOne
+    @JoinColumn(name = "ID_MANAGER")
+    @JsonIgnore
+    Manager idManager;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DATE_PURCHASE")
     Date date;
 
-    @Column(name = "PAYMENT")
-    String payment;
+    @Column(name = "MODIFICATION")
+    String modification;
 
     public Purchase() {
     }
 
-    public Purchase(Automobile idAutomobile, Customer idCustomer, Date date, String payment) {
+    public Purchase(Automobile idAutomobile, Customer idCustomer, Manager idManager, Date date, String modification) {
         this.idAutomobile = idAutomobile;
         this.idCustomer = idCustomer;
+        this.idManager = idManager;
         this.date = date;
-        this.payment = payment;
+        this.modification = modification;
     }
 
     public Long getIdPurchase() {
@@ -66,6 +72,14 @@ public class Purchase {
         this.idCustomer = idCustomer;
     }
 
+    public Manager getIdManager() {
+        return idManager;
+    }
+
+    public void setIdManager(Manager idManager) {
+        this.idManager = idManager;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -74,12 +88,12 @@ public class Purchase {
         this.date = date;
     }
 
-    public String getPayment() {
-        return payment;
+    public String getModification() {
+        return modification;
     }
 
-    public void setPayment(String payment) {
-        this.payment = payment;
+    public void setModification(String modification) {
+        this.modification = modification;
     }
 
     @Override
@@ -88,8 +102,9 @@ public class Purchase {
                 "idPurchase=" + idPurchase +
                 ", idAutomobile=" + idAutomobile +
                 ", idCustomer=" + idCustomer +
+                ", idManager=" + idManager +
                 ", date=" + date +
-                ", payment='" + payment + '\'' +
+                ", modification='" + modification + '\'' +
                 '}';
     }
 }

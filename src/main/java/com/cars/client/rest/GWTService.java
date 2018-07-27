@@ -4,7 +4,6 @@ package com.cars.client.rest;
 import com.cars.shared.models.*;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.RestService;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -172,6 +171,31 @@ public interface GWTService extends RestService {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/equipment/popup_{id}")
-    void listAutoPopup(@PathParam("id") Long id, MethodCallback<List<AutoPopup>> methodCallback);
+    @Path("/equipment/popup_{id}_{modification}")
+    void listAutoPopup(@PathParam("id") Long id, @PathParam("modification") String modification, MethodCallback<List<AutoPopup>> methodCallback);
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/equipment_{id}")
+    void listModifications(@PathParam("id") Long id, MethodCallback<List<String>> callback);
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/managers/get_{id}")
+    void getManager(@PathParam("id") Long id, MethodCallback<Manager> callback);
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/get_{login}")
+    void getUserByLogin(@PathParam("login") String login, MethodCallback<User> callback);
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/update")
+    void updateUser(User user, MethodCallback<Void> methodCallback);
+
 }

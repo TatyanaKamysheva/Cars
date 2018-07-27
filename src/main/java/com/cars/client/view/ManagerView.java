@@ -1,6 +1,7 @@
 package com.cars.client.view;
 
 import com.cars.client.rest.GWTService;
+import com.cars.client.view.popup.UserPopup;
 import com.cars.shared.models.Manager;
 import com.cars.shared.models.UserLoginInfo;
 import com.google.gwt.cell.client.ButtonCell;
@@ -21,9 +22,11 @@ public class ManagerView extends Composite {
     Button addButton = new Button("Add");
     //Text fields
     TextBox id = new TextBox();
-    TextBox name = new TextBox();
+    TextBox firstName = new TextBox();
+    TextBox surname = new TextBox();
     TextBox salary = new TextBox();
     TextBox phone = new TextBox();
+    ListBox role = new ListBox();
     //Table
     CellTable<Manager> table = new CellTable<>();
     ListDataProvider<Manager> dataProvider = new ListDataProvider<>();
@@ -35,10 +38,16 @@ public class ManagerView extends Composite {
             return String.valueOf(object.getIdManager());
         }
     };
-    TextColumn<Manager> nameColumn = new TextColumn<Manager>() {
+    TextColumn<Manager> firstNameColumn = new TextColumn<Manager>() {
         @Override
         public String getValue(Manager object) {
-            return object.getFullName();
+            return object.getFirstName();
+        }
+    };
+    TextColumn<Manager> surnameColumn = new TextColumn<Manager>() {
+        @Override
+        public String getValue(Manager object) {
+            return object.getSurname();
         }
     };
     TextColumn<Manager> salaryColumn = new TextColumn<Manager>() {
@@ -51,6 +60,12 @@ public class ManagerView extends Composite {
         @Override
         public String getValue(Manager object) {
             return object.getPhone();
+        }
+    };
+    TextColumn<Manager> roleColumn = new TextColumn<Manager>() {
+        @Override
+        public String getValue(Manager object) {
+            return object.getRole();
         }
     };
     ButtonCell buttonCell = new ButtonCell();
@@ -70,26 +85,15 @@ public class ManagerView extends Composite {
     };
     //Labels
     Label idLabel = new Label("ID");
-    Label nameLabel = new Label("Full name");
+    Label firstnameLabel = new Label("First name");
+    Label surnameLabel = new Label("Surname");
     Label salaryLabel = new Label("Salary");
     Label phoneLabel = new Label("Phone");
+    Label roleLabel = new Label("Role");
     VerticalPanel panel = new VerticalPanel();
     private GWTService restService = (GWTService) GWT.create(GWTService.class);
-
-    ManagerView(UserLoginInfo userLoginInfo) {
-        RootPanel.get().add(panel);
-        table.addColumn(idColumn, "ID");
-        table.addColumn(nameColumn, "Name");
-        table.addColumn(salaryColumn, "Salary");
-        table.addColumn(phoneColumn, "Phone");
-        switch (userLoginInfo.getRole()) {
-            case Admin:
-                table.addColumn(bColumn, "Edit");
-                table.addColumn(deleteColumn, "Delete");
-        }
-
-
-    }
+    Grid grid = new Grid(7, 2);
+    private Label infoLabel = new Label();
 
     void refreshTable() {
         restService.listManager(new MethodCallback<List<Manager>>() {
@@ -105,22 +109,40 @@ public class ManagerView extends Composite {
         });
     }
 
+    ManagerView(UserLoginInfo userLoginInfo) {
+        role.addItem("Admin");
+        role.addItem("Supervisor");
+        role.addItem("Seller");
+        RootPanel.get().add(panel);
+        table.addColumn(idColumn, "ID");
+        table.addColumn(firstNameColumn, "First name");
+        table.addColumn(surnameColumn, "Surname");
+        table.addColumn(salaryColumn, "Salary");
+        table.addColumn(phoneColumn, "Phone");
+        table.addColumn(roleColumn, "Role");
+        table.addColumn(bColumn, "Edit");
+        table.addColumn(deleteColumn, "Delete");
+    }
+
     void init() {
-        panel.add(idLabel);
+        grid.setCellSpacing(10);
         id.setEnabled(false);
-        panel.add(id);
+        grid.setWidget(0, 0, idLabel);
+        grid.setWidget(0, 1, id);
+        grid.setWidget(1, 0, firstnameLabel);
+        grid.setWidget(1, 1, firstName);
+        grid.setWidget(2, 0, surnameLabel);
+        grid.setWidget(2, 1, surname);
+        grid.setWidget(3, 0, phoneLabel);
+        grid.setWidget(3, 1, phone);
+        grid.setWidget(4, 0, salaryLabel);
+        grid.setWidget(4, 1, salary);
+        grid.setWidget(5, 0, roleLabel);
+        grid.setWidget(5, 1, role);
+        grid.setWidget(6, 0, addButton);
+        grid.setWidget(6, 1, infoLabel);
 
-        panel.add(nameLabel);
-        panel.add(name);
-
-        panel.add(salaryLabel);
-        panel.add(salary);
-
-        panel.add(phoneLabel);
-        panel.add(phone);
-
-        panel.add(addButton);
-
+        panel.add(grid);
         panel.add(table);
         refreshTable();
         dataProvider.addDataDisplay(table);
@@ -129,18 +151,21 @@ public class ManagerView extends Composite {
             if (!addButton.getText().equals("Add")) {
                 manager.setIdManager(Long.valueOf(id.getText()));
             }
-            manager.setFullName(name.getText());
+            manager.setFirstName(firstName.getText());
+            manager.setSurname(surname.getText());
             manager.setSalary(Long.valueOf(salary.getText()));
             manager.setPhone(phone.getText());
+            manager.setRole(role.getSelectedValue());
             if (addButton.getText().equals("Add")) {
                 restService.saveManager(manager, new MethodCallback<Void>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
-
                     }
 
                     @Override
                     public void onSuccess(Method method, Void response) {
+                        UserPopup userPopup = new UserPopup(manager.getFirstName() + manager.getSurname());
+                        userPopup.show();
                         refreshTable();
                     }
                 });
@@ -158,7 +183,8 @@ public class ManagerView extends Composite {
                 });
             }
             id.setText("");
-            name.setText("");
+            firstName.setText("");
+            surname.setText("");
             salary.setText("");
             phone.setText("");
             addButton.setText("Add");
@@ -167,9 +193,11 @@ public class ManagerView extends Composite {
         {
             id.setText(String.valueOf(object.getIdManager()));
             id.setEnabled(false);
-            name.setText(object.getFullName());
+            firstName.setText(object.getFirstName());
+            surname.setText(object.getSurname());
             salary.setText(String.valueOf(object.getSalary()));
             phone.setText(object.getPhone());
+            role.setValue(0, object.getRole());
             addButton.setText("Submit");
         });
         deleteColumn.setFieldUpdater(((index, object, value) -> {

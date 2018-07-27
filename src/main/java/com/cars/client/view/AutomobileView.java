@@ -97,24 +97,9 @@ public class AutomobileView extends Composite {
     private Label nameLabel = new Label("Name");
     private Label gearLabel = new Label("Gears");
     private Label driveLabel = new Label("Drive type");
-
-    AutomobileView(UserLoginInfo userLoginInfo) {
-        RootPanel.get().add(panel);
-        switch (userLoginInfo.getRole()) {
-            case Admin:
-                table.addColumn(idColumn, "ID");
-                table.addColumn(editColumn, "Edit");
-                table.addColumn(deleteColumn, "Delete");
-            case Seller:
-                table.addColumn(comfortColumn, "Comfort");
-                table.addColumn(standartColumn, "Standart");
-        }
-
-        table.addColumn(modelColumn, "Model");
-        table.addColumn(nameColumn, "Name");
-        table.addColumn(gearsColumn, "Gears");
-        table.addColumn(driveColumn, "Drive type");
-    }
+    Grid grid = new Grid(6, 2);
+    UserLoginInfo userLoginInfo;
+    Label infoLabel = new Label();
 
     private void refreshTable() {
         restService.listAuto(new MethodCallback<List<Automobile>>() {
@@ -130,24 +115,44 @@ public class AutomobileView extends Composite {
         });
     }
 
+    AutomobileView(UserLoginInfo userLoginInfo) {
+        this.userLoginInfo = userLoginInfo;
+        RootPanel.get().add(panel);
+        table.addColumn(idColumn, "ID");
+        table.addColumn(modelColumn, "Model");
+        table.addColumn(nameColumn, "Name");
+        table.addColumn(gearsColumn, "Gears");
+        table.addColumn(driveColumn, "Drive type");
+        switch (userLoginInfo.getRole()) {
+            case Admin:
+                table.addColumn(editColumn, "Edit");
+                table.addColumn(deleteColumn, "Delete");
+            case Seller:
+                table.addColumn(comfortColumn, "Comfort");
+                table.addColumn(standartColumn, "Standard");
+        }
+    }
+
     public void init() {
-        panel.add(idLabel);
-        id.setEnabled(false);
-        panel.add(id);
-
-        panel.add(modelLabel);
-        panel.add(model);
-
-        panel.add(nameLabel);
-        panel.add(name);
-
-        panel.add(gearLabel);
-        panel.add(gears);
-
-        panel.add(driveLabel);
-        panel.add(driveType);
-
-        panel.add(addButton);
+        switch (userLoginInfo.getRole()) {
+            case Admin:
+                grid.setCellSpacing(10);
+                id.setEnabled(false);
+                grid.setWidget(0, 0, idLabel);
+                grid.setWidget(0, 1, id);
+                grid.setWidget(1, 0, nameLabel);
+                grid.setWidget(1, 1, name);
+                grid.setWidget(2, 0, modelLabel);
+                grid.setWidget(2, 1, model);
+                grid.setWidget(3, 0, gearLabel);
+                grid.setWidget(3, 1, gears);
+                grid.setWidget(4, 0, driveLabel);
+                grid.setWidget(4, 1, driveType);
+                grid.setWidget(5, 0, addButton);
+                grid.setWidget(5, 1, infoLabel);
+                panel.add(grid);
+                break;
+        }
         panel.add(table);
         refreshTable();
         dataProvider.addDataDisplay(table);
@@ -218,8 +223,16 @@ public class AutomobileView extends Composite {
         }));
 
         comfortColumn.setFieldUpdater(((index, object, value) -> {
-            new AutomobilePopup(object.getIdAutomobile()).show();
+            final AutomobilePopup popup = new AutomobilePopup(object.getIdAutomobile(), "Comfort");
+            popup.center();
+            popup.show();
         }));
+
+        standartColumn.setFieldUpdater((((index, object, value) -> {
+            final AutomobilePopup popup = new AutomobilePopup(object.getIdAutomobile(), "Standard");
+            popup.center();
+            popup.show();
+        })));
 
     }
 }

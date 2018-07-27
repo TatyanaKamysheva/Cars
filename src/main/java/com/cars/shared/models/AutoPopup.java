@@ -19,4 +19,20 @@ public class AutoPopup {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public AutoPopup(String attribute, String value) {
+        this.attribute = attribute;
+        this.value = value;
+    }
+
+    public AutoPopup() {
+    }
+
+    @Override
+    public String toString() {
+        return "AutoPopup{" +
+                "attribute='" + attribute + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

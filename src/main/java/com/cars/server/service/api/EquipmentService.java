@@ -16,5 +16,7 @@ public interface EquipmentService {
 
     List<Equipment> getAll();
 
-    List<AutoPopup> getComfortAttributesList(Long id);
+    List<AutoPopup> getComfortAttributesList(Long id, String modification);
+
+    List<String> getModification(Long id);
 }

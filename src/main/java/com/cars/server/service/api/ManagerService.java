@@ -14,4 +14,6 @@ public interface ManagerService {
     void delete(Long id) throws Exception;
 
     List<Manager> getAll();
+
+    Manager getByName(String fname, String surname);
 }

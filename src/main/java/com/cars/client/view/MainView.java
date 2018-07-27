@@ -1,14 +1,11 @@
 package com.cars.client.view;
 
 import com.cars.client.rest.GWTService;
+import com.cars.client.view.listboxes.OptionsDialogBox;
 import com.cars.shared.models.UserLoginInfo;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Defaults;
 
 public class MainView extends Composite {
@@ -19,8 +16,7 @@ public class MainView extends Composite {
 
     UserLoginInfo userLoginInfo;
 
-    //добавляю кнопку опций, где будет возможность выбрать изменение своего пароля
-    private PushButton optionsButton = new PushButton("Options");
+    Grid grid = new Grid(1, 9);
     private GWTService restService = (GWTService) GWT.create(GWTService.class);
     private String roleEmployee = null;
     private Button managerButton = new Button("Managers");
@@ -29,48 +25,131 @@ public class MainView extends Composite {
     private Button automobilesButton = new Button("Automobiles");
     private Button attributesButton = new Button("Attributes");
     private Button equipmentsButton = new Button("Equipments");
-
+    private Button optionsButton = new Button("Options");
+    private Button logoutButton = new Button("Log out");
 
     public MainView(UserLoginInfo userLoginInfo) {
         switch (userLoginInfo.getRole()) {
             case Seller:
-                RootPanel.get().add(managerButton);
-                RootPanel.get().add(customerButton);
-                RootPanel.get().add(purchasesButton);
-                RootPanel.get().add(automobilesButton);
+                grid.setWidget(0, 0, customerButton);
+                grid.setWidget(0, 1, purchasesButton);
+                grid.setWidget(0, 2, automobilesButton);
+                grid.setWidget(0, 3, logoutButton);
+                grid.setWidget(0, 4, optionsButton);
+                grid.setCellSpacing(30);
+                RootPanel.get().add(grid);
+                break;
+            case Admin:
+                grid.setWidget(0, 0, managerButton);
+                grid.setWidget(0, 1, customerButton);
+                grid.setWidget(0, 2, attributesButton);
+                grid.setWidget(0, 3, automobilesButton);
+                grid.setWidget(0, 4, equipmentsButton);
+                grid.setWidget(0, 5, purchasesButton);
+                grid.setWidget(0, 6, logoutButton);
+                grid.setWidget(0, 7, optionsButton);
+                grid.setCellSpacing(30);
+                RootPanel.get().add(grid);
+                break;
+
+            case Supervisor:
+                grid.setWidget(0, 1, attributesButton);
+                grid.setWidget(0, 2, automobilesButton);
+                grid.setWidget(0, 3, equipmentsButton);
+                grid.setWidget(0, 6, logoutButton);
+                grid.setWidget(0, 7, optionsButton);
+                RootPanel.get().add(grid);
                 break;
         }
 
         CustomerView customerView = new CustomerView();
-        ManagerView managerView = new ManagerView(userLoginInfo);
         AutomobileView automobileView = new AutomobileView(userLoginInfo);
-        //PurchaseView purchaseView=new PurchaseView();
-        //AttributeView attributeView=new AttributeView();
-
+        PurchaseView purchaseView = new PurchaseView(userLoginInfo);
+        AttributeView attributeView = new AttributeView();
+        ManagerView managerView = new ManagerView(userLoginInfo);
+        EquipmentView equipmentView = new EquipmentView();
+        logoutButton.addClickHandler(event -> {
+            //Cookies.removeCookie("sessionID");
+            Cookies.removeCookie("sessionID");
+            Cookies.removeCookie("login");
+            Cookies.removeCookie("password");
+            RootPanel.get().remove(grid);
+            RootPanel.get().remove(automobileView.panel);
+            RootPanel.get().remove(purchaseView.panel);
+            RootPanel.get().remove(customerView.panel);
+            RootPanel.get().remove(equipmentView.panel);
+            RootPanel.get().remove(attributeView.panel);
+            RootPanel.get().remove(managerView.panel);
+            RootPanel.get().add(new LoginView());
+        });
         customerButton.addClickHandler(event -> {
-            customerView.panel.setVisible(true);
             managerView.panel.setVisible(false);
+            automobileView.panel.setVisible(false);
+            purchaseView.panel.setVisible(false);
+            equipmentView.panel.setVisible(false);
+            customerView.panel.setVisible(true);
+            attributeView.panel.setVisible(false);
             customerView.init();
             RootPanel.get().add(customerView);
         });
-        managerButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                customerView.panel.setVisible(false);
-                managerView.panel.setVisible(true);
-                managerView.init();
-                RootPanel.get().add(managerView);
-            }
+        managerButton.addClickHandler(event -> {
+            managerView.panel.setVisible(true);
+            automobileView.panel.setVisible(false);
+            purchaseView.panel.setVisible(false);
+            equipmentView.panel.setVisible(false);
+            customerView.panel.setVisible(false);
+            attributeView.panel.setVisible(false);
+            managerView.init();
+            RootPanel.get().add(managerView);
         });
 
-        automobilesButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                customerView.panel.setVisible(false);
-                managerView.panel.setVisible(false);
-                automobileView.init();
-                RootPanel.get().add(automobileView);
-            }
+        automobilesButton.addClickHandler(event -> {
+            managerView.panel.setVisible(false);
+            purchaseView.panel.setVisible(false);
+            equipmentView.panel.setVisible(false);
+            customerView.panel.setVisible(false);
+            attributeView.panel.setVisible(false);
+            automobileView.init();
+            automobileView.panel.setVisible(true);
+            RootPanel.get().add(automobileView);
+        });
+
+        purchasesButton.addClickHandler(event -> {
+            managerView.panel.setVisible(false);
+            automobileView.panel.setVisible(false);
+            purchaseView.panel.setVisible(true);
+            equipmentView.panel.setVisible(false);
+            customerView.panel.setVisible(false);
+            attributeView.panel.setVisible(false);
+            purchaseView.init();
+            RootPanel.get().add(purchaseView);
+        });
+
+        attributesButton.addClickHandler(event -> {
+            managerView.panel.setVisible(false);
+            automobileView.panel.setVisible(false);
+            purchaseView.panel.setVisible(false);
+            equipmentView.panel.setVisible(false);
+            customerView.panel.setVisible(false);
+            attributeView.panel.setVisible(true);
+            attributeView.init();
+            RootPanel.get().add(attributeView);
+        });
+
+        equipmentsButton.addClickHandler(event -> {
+            managerView.panel.setVisible(false);
+            automobileView.panel.setVisible(false);
+            purchaseView.panel.setVisible(false);
+            equipmentView.panel.setVisible(true);
+            customerView.panel.setVisible(false);
+            attributeView.panel.setVisible(false);
+            equipmentView.init();
+            RootPanel.get().add(equipmentView);
+        });
+        optionsButton.addClickHandler(event -> {
+            DialogBox dialogBox = new DialogBox();
+            dialogBox = new OptionsDialogBox(userLoginInfo);
+            dialogBox.show();
         });
     }
 }

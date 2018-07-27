@@ -3,7 +3,6 @@ package com.cars.server.service.impl;
 import com.cars.server.dao.ManagerDAO;
 import com.cars.server.service.api.ManagerService;
 import com.cars.shared.models.Manager;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +45,10 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     public void setManagerDAO(ManagerDAO managerDAO) {
+    }
+
+    public Manager getByName(String fname, String surname) {
+        return this.managerDAO.getByName(fname, surname);
     }
 }
 

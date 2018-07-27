@@ -32,10 +32,5 @@ public class AttributeListBox extends ListBox {
                 .findFirst()
                 .orElse(null);
     }
-
-    public Attribute setAttribute(Attribute attribute1) {
-        //super.getSelectElement().getOptions().getItem(index).setSelected(selected);
-        return this.attributes.stream().filter(attribute -> attribute.equals(attribute1.getName())).findFirst().orElse(null);
-    }
 }
 

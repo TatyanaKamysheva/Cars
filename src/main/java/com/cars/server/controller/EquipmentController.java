@@ -42,10 +42,16 @@ public class EquipmentController {
     }
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/equipment/popup_{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/equipment/popup_{id}_{modification}", method = RequestMethod.GET)
     public @ResponseBody
-    List<AutoPopup> listPopup(@PathVariable("id") Long id) {
-        return this.equipmentService.getComfortAttributesList(id);
+    List<AutoPopup> listPopup(@PathVariable("id") Long id, @PathVariable("modification") String modification) {
+        return this.equipmentService.getComfortAttributesList(id, modification);
     }
 
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/equipment_{id}", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> listModifications(@PathVariable("id") Long id) {
+        return this.equipmentService.getModification(id);
+    }
 }
