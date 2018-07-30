@@ -198,4 +198,9 @@ public interface GWTService extends RestService {
     @Path("/user/update")
     void updateUser(User user, MethodCallback<Void> methodCallback);
 
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/{id}")
+    void deleteUser(@PathParam("id") Long id, MethodCallback<Void> methodCallback);
 }

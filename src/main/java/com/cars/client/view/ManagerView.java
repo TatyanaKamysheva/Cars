@@ -2,10 +2,12 @@ package com.cars.client.view;
 
 import com.cars.client.rest.GWTService;
 import com.cars.client.view.popup.UserPopup;
+import com.cars.shared.ConstantProvider;
 import com.cars.shared.models.Manager;
-import com.cars.shared.models.UserLoginInfo;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ManagerView extends Composite {
 
     Button addButton = new Button("Add");
+
     //Text fields
     TextBox id = new TextBox();
     TextBox firstName = new TextBox();
@@ -68,18 +71,27 @@ public class ManagerView extends Composite {
             return object.getRole();
         }
     };
-    ButtonCell buttonCell = new ButtonCell();
-    Column<Manager, String> bColumn = new Column<Manager, String>(buttonCell) {
+    ButtonCell buttonCell = new ButtonCell() {
+        @Override
+        public void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant("<button type=\"button\" class=\"gwt-Button\" tabindex=\"-1\">");
+            if (data != null) {
+                sb.append(data);
+            }
+            sb.appendHtmlConstant("</button>");
+        }
+    };
+    Column<Manager, String> editColumn = new Column<Manager, String>(buttonCell) {
         @Override
         public String getValue(Manager object) {
-            return "EDIT";
+            return "Edit";
         }
 
     };
     Column<Manager, String> deleteColumn = new Column<Manager, String>(buttonCell) {
         @Override
         public String getValue(Manager object) {
-            return "DELETE";
+            return "Delete";
         }
 
     };
@@ -90,10 +102,30 @@ public class ManagerView extends Composite {
     Label salaryLabel = new Label("Salary");
     Label phoneLabel = new Label("Phone");
     Label roleLabel = new Label("Role");
-    VerticalPanel panel = new VerticalPanel();
-    private GWTService restService = (GWTService) GWT.create(GWTService.class);
-    Grid grid = new Grid(7, 2);
     private Label infoLabel = new Label();
+    VerticalPanel panel = new VerticalPanel();
+    Grid grid = new Grid(7, 2);
+
+
+    private GWTService restService = (GWTService) GWT.create(GWTService.class);
+
+    ManagerView() {
+        panel.setStyleName("myPanel");
+        grid.setStyleName("input");
+        infoLabel.setStyleName("infoLabel");
+        role.addItem("Admin");
+        role.addItem("Supervisor");
+        role.addItem("Seller");
+        RootPanel.get().add(panel);
+        table.addColumn(idColumn, "ID");
+        table.addColumn(firstNameColumn, "First name");
+        table.addColumn(surnameColumn, "Surname");
+        table.addColumn(salaryColumn, "Salary");
+        table.addColumn(phoneColumn, "Phone");
+        table.addColumn(roleColumn, "Role");
+        table.addColumn(editColumn, "Edit");
+        table.addColumn(deleteColumn, "Delete");
+    }
 
     void refreshTable() {
         restService.listManager(new MethodCallback<List<Manager>>() {
@@ -107,21 +139,6 @@ public class ManagerView extends Composite {
                 list.addAll(response);
             }
         });
-    }
-
-    ManagerView(UserLoginInfo userLoginInfo) {
-        role.addItem("Admin");
-        role.addItem("Supervisor");
-        role.addItem("Seller");
-        RootPanel.get().add(panel);
-        table.addColumn(idColumn, "ID");
-        table.addColumn(firstNameColumn, "First name");
-        table.addColumn(surnameColumn, "Surname");
-        table.addColumn(salaryColumn, "Salary");
-        table.addColumn(phoneColumn, "Phone");
-        table.addColumn(roleColumn, "Role");
-        table.addColumn(bColumn, "Edit");
-        table.addColumn(deleteColumn, "Delete");
     }
 
     void init() {
@@ -151,45 +168,60 @@ public class ManagerView extends Composite {
             if (!addButton.getText().equals("Add")) {
                 manager.setIdManager(Long.valueOf(id.getText()));
             }
-            manager.setFirstName(firstName.getText());
-            manager.setSurname(surname.getText());
-            manager.setSalary(Long.valueOf(salary.getText()));
-            manager.setPhone(phone.getText());
-            manager.setRole(role.getSelectedValue());
-            if (addButton.getText().equals("Add")) {
-                restService.saveManager(manager, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
-                    }
-
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        UserPopup userPopup = new UserPopup(manager.getFirstName() + manager.getSurname());
-                        userPopup.show();
-                        refreshTable();
-                    }
-                });
+            if (!firstName.getText().matches(ConstantProvider.FIRST_NAME_PATTERN)) {
+                infoLabel.setText("Incorrect first name: (3-15 english letters and digits)");
+            } else if (!surname.getText().matches(ConstantProvider.LAST_NAME_PATTERN)) {
+                infoLabel.setText("Incorrect surname: (3-15 english letters and digits)");
+            } else if (!salary.getText().matches(ConstantProvider.NUMBER_PATTERN)) {
+                infoLabel.setText("Incorrect salary: (3-15 digits)");
+            } else if (!phone.getText().matches(ConstantProvider.PHONE_PATTERN)) {
+                infoLabel.setText("Incorrect phone: (3-15 digits)");
             } else {
-                restService.updateManager(manager, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
+                manager.setFirstName(firstName.getText());
+                manager.setSurname(surname.getText());
+                manager.setSalary(Long.valueOf(salary.getText()));
+                manager.setPhone(phone.getText());
+                manager.setRole(role.getSelectedValue());
+                if (addButton.getText().equals("Add")) {
+                    restService.saveManager(manager, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+                            Window.alert("Fail to add manager: " + exception.getMessage());
+                        }
 
-                    }
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            UserPopup userPopup = new UserPopup(manager.getFirstName() + manager.getSurname());
+                            userPopup.setPopupPosition(418, 354);
+                            userPopup.show();
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                } else {
+                    restService.updateManager(manager, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
 
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        refreshTable();
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                }
+                id.setText("");
+                firstName.setText("");
+                surname.setText("");
+                salary.setText("");
+                phone.setText("");
+                addButton.setText("Add");
+                infoLabel.setText(" ");
             }
-            id.setText("");
-            firstName.setText("");
-            surname.setText("");
-            salary.setText("");
-            phone.setText("");
-            addButton.setText("Add");
         });
-        bColumn.setFieldUpdater((index, object, value) ->
+        editColumn.setFieldUpdater((index, object, value) ->
         {
             id.setText(String.valueOf(object.getIdManager()));
             id.setEnabled(false);
@@ -201,15 +233,25 @@ public class ManagerView extends Composite {
             addButton.setText("Submit");
         });
         deleteColumn.setFieldUpdater(((index, object, value) -> {
+            Long idSelected = object.getIdManager();
             restService.deleteManager(object.getIdManager(), new MethodCallback<Void>() {
                 @Override
                 public void onFailure(Method method, Throwable exception) {
-                    Window.alert("Fail");
+
                 }
 
                 @Override
                 public void onSuccess(Method method, Void response) {
-                    refreshTable();
+                    restService.deleteUser(idSelected, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+                        }
+
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            refreshTable();
+                        }
+                    });
                 }
             });
         }));

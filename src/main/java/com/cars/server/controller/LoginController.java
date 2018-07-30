@@ -34,4 +34,9 @@ public class LoginController {
     public void update(@RequestBody User user) {
         this.loginService.update(user);
     }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable("id") Long id) {
+        loginService.delete(id);
+    }
 }

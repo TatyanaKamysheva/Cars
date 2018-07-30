@@ -21,6 +21,7 @@ public class UserPopup extends PopupPanel {
         button.addClickHandler(event -> {
             hide();
         });
+        panel.setStyleName("boxForLogging");
         setWidget(panel);
     }
 

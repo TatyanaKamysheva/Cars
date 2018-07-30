@@ -8,6 +8,8 @@ import com.cars.shared.models.Automobile;
 import com.cars.shared.models.Equipment;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -57,7 +59,16 @@ public class EquipmentView extends Composite {
         }
     };
 
-    private ButtonCell buttonCell = new ButtonCell();
+    private ButtonCell buttonCell = new ButtonCell() {
+        @Override
+        public void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant("<button type=\"button\" class=\"gwt-Button\" tabindex=\"-1\">");
+            if (data != null) {
+                sb.append(data);
+            }
+            sb.appendHtmlConstant("</button>");
+        }
+    };
     private Column<Equipment, String> editColumn = new Column<Equipment, String>(buttonCell) {
         @Override
         public String getValue(Equipment object) {
@@ -83,6 +94,9 @@ public class EquipmentView extends Composite {
     Grid grid = new Grid(5, 2);
 
     EquipmentView() {
+        panel.setStyleName("myPanel");
+        grid.setStyleName("input");
+        infoLabel.setStyleName("infoLabel");
         setAuto();
         setAttributes();
         RootPanel.get().add(panel);

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 
+
 @Entity
 @Table(name = "USERS")
 public class User implements Serializable {

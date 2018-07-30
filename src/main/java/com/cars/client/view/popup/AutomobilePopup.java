@@ -48,6 +48,7 @@ public class AutomobilePopup extends PopupPanel {
         button.addClickHandler(event -> {
             hide();
         });
+        panel.setStyleName("boxForLogging");
         setWidget(panel);
     }
 

@@ -6,6 +6,8 @@ import com.cars.client.view.listboxes.CustomerListBox;
 import com.cars.shared.models.*;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -47,18 +49,27 @@ public class PurchaseView extends Composite {
     };
     Grid grid = new Grid(7, 2);
     AutomobileListBox automobile = new AutomobileListBox();
-    private ButtonCell buttonCell = new ButtonCell();
+    private ButtonCell buttonCell = new ButtonCell() {
+        @Override
+        public void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant("<button type=\"button\" class=\"gwt-Button\" tabindex=\"-1\">");
+            if (data != null) {
+                sb.append(data);
+            }
+            sb.appendHtmlConstant("</button>");
+        }
+    };
     private Column<Purchase, String> editColumn = new Column<Purchase, String>(buttonCell) {
         @Override
         public String getValue(Purchase object) {
-            return "EDIT";
+            return "Edit";
         }
 
     };
     private Column<Purchase, String> deleteColumn = new Column<Purchase, String>(buttonCell) {
         @Override
         public String getValue(Purchase object) {
-            return "DELETE";
+            return "Delete";
         }
 
     };
@@ -100,6 +111,9 @@ public class PurchaseView extends Composite {
 
     //private DateTimeFormat dateTimeFormat=new DateTimeFormat("yyyy");
     PurchaseView(UserLoginInfo userLoginInfo) {
+        panel.setStyleName("myPanel");
+        grid.setStyleName("input");
+        infoLabel.setStyleName("infoLabel");
         setAuto();
         setCustomer();
         this.userLoginInfo = userLoginInfo;

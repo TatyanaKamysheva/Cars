@@ -49,8 +49,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
                 <prop key="connection.driver_class">oracle.jdbc.driver.OracleDriver</prop>
                 <prop key="connection.url">jdbc:oracle:thin:@localhost:1521:car</prop>
                 <prop key="hbm2ddl.auto">update</prop>
-                <!--<prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>-->
+                <prop key="hibernate.show_sql">true</prop>
                 <!-- <prop key="hibernate.default_schema">CAR</prop>-->
             </props>
         </property>

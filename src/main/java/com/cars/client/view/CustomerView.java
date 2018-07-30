@@ -1,9 +1,12 @@
 package com.cars.client.view;
 
 import com.cars.client.rest.GWTService;
+import com.cars.shared.ConstantProvider;
 import com.cars.shared.models.Customer;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -58,18 +61,27 @@ public class CustomerView extends Composite {
         }
     };
 
-    private ButtonCell buttonCell = new ButtonCell();
+    private ButtonCell buttonCell = new ButtonCell() {
+        @Override
+        public void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant("<button type=\"button\" class=\"gwt-Button\" tabindex=\"-1\">");
+            if (data != null) {
+                sb.append(data);
+            }
+            sb.appendHtmlConstant("</button>");
+        }
+    };
     private Column<Customer, String> editColumn = new Column<Customer, String>(buttonCell) {
         @Override
         public String getValue(Customer object) {
-            return "EDIT";
+            return "Edit";
         }
 
     };
     private Column<Customer, String> deleteColumn = new Column<Customer, String>(buttonCell) {
         @Override
         public String getValue(Customer object) {
-            return "DELETE";
+            return "Delete";
         }
 
     };
@@ -89,6 +101,9 @@ public class CustomerView extends Composite {
     private Label infoLabel = new Label("");
 
     CustomerView() {
+        panel.setStyleName("myPanel");
+        grid.setStyleName("input");
+        infoLabel.setStyleName("infoLabel");
         RootPanel.get().add(panel);
         table.addColumn(idColumn, "ID");
         table.addColumn(firstnameColumn, "First name");
@@ -139,67 +154,54 @@ public class CustomerView extends Composite {
             if (!addButton.getText().equals("Add")) {
                 customer.setIdCustomer(Long.valueOf(id.getText()));
             }
-            if (name.getText().equals("")) {
-                infoLabel.setText("Enter the name!");
-                name.setText("");
-                return;
-            } else customer.setFirstName(name.getText());
-
-            if (surname.getText().equals("")) {
-                infoLabel.setText("Enter the name!");
-                surname.setText("");
-                return;
-            } else customer.setSurname(surname.getText());
-
-            try {
-                Long.valueOf(passport.getText());
+            if (!name.getText().matches(ConstantProvider.FIRST_NAME_PATTERN)) {
+                infoLabel.setText("Incorrect first name: (3-15 english letters and digits)");
+            } else if (!surname.getText().matches(ConstantProvider.LAST_NAME_PATTERN)) {
+                infoLabel.setText("Incorrect surname: (3-15 english letters and digits)");
+            } else if (!passport.getText().matches(ConstantProvider.NUMBER_PATTERN)) {
+                infoLabel.setText("Incorrect passport: (3-15 digits)");
+            } else if (!phone.getText().matches(ConstantProvider.PHONE_PATTERN)) {
+                infoLabel.setText("Incorrect phone: (3-15 digits)");
+            } else {
+                customer.setFirstName(name.getText());
+                customer.setSurname(surname.getText());
+                customer.setPhone(phone.getText());
                 customer.setPassport(Long.valueOf(passport.getText()));
 
-            } catch (NumberFormatException e) {
-                infoLabel.setText("Enter the number!");
-                return;
-            }
+                if (addButton.getText().equals("Add")) {
+                    restService.saveCustomer(customer, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+                            Window.alert("Fail to save customer");
+                        }
 
-            if (phone.getText().equals("")) {
-                infoLabel.setText("Enter the phone!");
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                } else {
+                    restService.updateCustomer(customer, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+                            Window.alert("Fail to update customer");
+                        }
+
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                }
+                id.setText("");
+                name.setText("");
+                surname.setText("");
+                passport.setText("");
                 phone.setText("");
-                return;
-            } else customer.setPhone(phone.getText());
-
-            if (addButton.getText().equals("Add")) {
-
-                restService.saveCustomer(customer, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
-                        Window.alert("Fail to save customer");
-                    }
-
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        infoLabel.setText("");
-                        refreshTable();
-                    }
-                });
-            } else {
-                restService.updateCustomer(customer, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
-                        Window.alert("Fail to update customer");
-                    }
-
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        infoLabel.setText("");
-                        refreshTable();
-                    }
-                });
+                addButton.setText("Add");
             }
-            id.setText("");
-            name.setText("");
-            surname.setText("");
-            passport.setText("");
-            phone.setText("");
-            addButton.setText("Add");
         });
         editColumn.setFieldUpdater((index, object, value) ->
         {

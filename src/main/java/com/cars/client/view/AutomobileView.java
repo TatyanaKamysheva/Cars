@@ -2,10 +2,13 @@ package com.cars.client.view;
 
 import com.cars.client.rest.GWTService;
 import com.cars.client.view.popup.AutomobilePopup;
+import com.cars.shared.ConstantProvider;
 import com.cars.shared.models.Automobile;
 import com.cars.shared.models.UserLoginInfo;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -62,7 +65,16 @@ public class AutomobileView extends Composite {
             return object.getDrive_type();
         }
     };
-    private ButtonCell buttonCell = new ButtonCell();
+    private ButtonCell buttonCell = new ButtonCell() {
+        @Override
+        public void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant("<button type=\"button\" class=\"gwt-Button\" tabindex=\"-1\">");
+            if (data != null) {
+                sb.append(data);
+            }
+            sb.appendHtmlConstant("</button>");
+        }
+    };
     private Column<Automobile, String> editColumn = new Column<Automobile, String>(buttonCell) {
         @Override
         public String getValue(Automobile object) {
@@ -116,6 +128,9 @@ public class AutomobileView extends Composite {
     }
 
     AutomobileView(UserLoginInfo userLoginInfo) {
+        panel.setStyleName("myPanel");
+        grid.setStyleName("input");
+        infoLabel.setStyleName("infoLabel");
         this.userLoginInfo = userLoginInfo;
         RootPanel.get().add(panel);
         table.addColumn(idColumn, "ID");
@@ -161,42 +176,54 @@ public class AutomobileView extends Composite {
             if (!addButton.getText().equals("Add")) {
                 automobile.setIdAutomobile(Long.valueOf(id.getText()));
             }
-            automobile.setDrive_type(driveType.getText());
-            automobile.setGears(Long.valueOf(gears.getText()));
-            automobile.setModel(model.getText());
-            automobile.setName(name.getText());
-            if (addButton.getText().equals("Add")) {
-
-                restService.saveAuto(automobile, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        refreshTable();
-                    }
-                });
+            if (!name.getText().matches(ConstantProvider.FIRST_NAME_PATTERN)) {
+                infoLabel.setText("Incorrect first name: (3-15 english letters)");
+            } else if (!model.getText().matches(ConstantProvider.PASSWORD_PATTERN)) {
+                infoLabel.setText("Incorrect model: (3-15 english letters and digits)");
+            } else if (!gears.getText().matches(ConstantProvider.NUMBER_PATTERN)) {
+                infoLabel.setText("Incorrect gears: (3-15 digits)");
+            } else if (driveType.getText().isEmpty()) {
+                infoLabel.setText("Incorrect drive type: should not be empty");
             } else {
-                restService.updateAuto(automobile, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
+                automobile.setDrive_type(driveType.getText());
+                automobile.setGears(Long.valueOf(gears.getText()));
+                automobile.setModel(model.getText());
+                automobile.setName(name.getText());
+                if (addButton.getText().equals("Add")) {
 
-                    }
+                    restService.saveAuto(automobile, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
 
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        refreshTable();
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                } else {
+                    restService.updateAuto(automobile, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                }
+                id.setText("");
+                name.setText("");
+                gears.setText("");
+                driveType.setText("");
+                model.setText("");
+                addButton.setText("Add");
             }
-            id.setText("");
-            name.setText("");
-            gears.setText("");
-            driveType.setText("");
-            model.setText("");
-            addButton.setText("Add");
         });
         editColumn.setFieldUpdater((index, object, value) ->
         {

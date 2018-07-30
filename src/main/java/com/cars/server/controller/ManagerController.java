@@ -18,15 +18,15 @@ public class ManagerController {
 
     Logger logger = Logger.getLogger(ManagerController.class);
 
+    @Autowired
+    private LoginServiceImpl loginService;
+
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/managers", method = RequestMethod.GET)
     public @ResponseBody
     List<Manager> listManager() {
         return this.managerService.getAll();
     }
-
-    @Autowired
-    private LoginServiceImpl loginService;
 
     @RequestMapping(value = "/managers", method = RequestMethod.POST)
     @ResponseBody
@@ -36,14 +36,12 @@ public class ManagerController {
         String password = "934b535800b1cba8f96a5d72f72f1611";
         User user = new User(login, password);
         this.loginService.save(user);
-
     }
 
     @RequestMapping(value = "/managers/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public void delete(@PathVariable("id") Long id) throws Exception {
         this.managerService.delete(id);
-        this.loginService.delete(id);
     }
 
     @RequestMapping(value = "/managers/update", method = RequestMethod.PUT)

@@ -19,15 +19,12 @@ public class LoginView extends Composite {
     public LoginView() {
 
         Grid grid = new Grid(2, 2);
-
-        grid.setCellSpacing(10);
-
+        grid.setCellSpacing(20);
         TextBox userLogin = new TextBox();
         PasswordTextBox userPassword = new PasswordTextBox();
         Button loginButton = new Button("Login");
-
         VerticalPanel mainPanel = new VerticalPanel();
-
+        mainPanel.setSpacing(20);
         userLogin.setWidth("150px");
         userPassword.setWidth("150px");
 
@@ -37,6 +34,7 @@ public class LoginView extends Composite {
         grid.setWidget(1, 1, userPassword);
 
         Label infoLabel = new Label();
+        infoLabel.setStyleName("infoLabel");
 
         mainPanel.add(grid);
         loginButton.addClickHandler(clickEvent -> {
@@ -49,7 +47,7 @@ public class LoginView extends Composite {
                 }
             };
 
-            timer.schedule(5000);
+            timer.schedule(7000);
 
             String login = userLogin.getText();
             String passwordHelper = userPassword.getText();
@@ -68,7 +66,7 @@ public class LoginView extends Composite {
                 public void onSuccess(Method method, UserLoginInfo userLoginInfo) {
                     if (userLoginInfo != null) {
                         Cookies.setCookie("sessionID", String.valueOf(new Random().nextInt(999999)));
-                        RootPanel.get().remove(mainPanel);
+                        RootPanel.get("options").remove(mainPanel);
                         RootPanel.get().add(new MainView(userLoginInfo));
                     } else {
                         infoLabel.setText("Wrong login or password!");
@@ -78,6 +76,6 @@ public class LoginView extends Composite {
         });
         mainPanel.add(infoLabel);
         mainPanel.add(loginButton);
-        RootPanel.get().add(mainPanel);
+        RootPanel.get("options").add(mainPanel);
     }
 }

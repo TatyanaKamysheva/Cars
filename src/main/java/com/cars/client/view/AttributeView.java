@@ -4,6 +4,8 @@ import com.cars.client.rest.GWTService;
 import com.cars.shared.models.Attribute;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -37,18 +39,27 @@ public class AttributeView extends Composite {
             return object.getName();
         }
     };
-    ButtonCell buttonCell = new ButtonCell();
+    ButtonCell buttonCell = new ButtonCell() {
+        @Override
+        public void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant("<button type=\"button\" class=\"gwt-Button\" tabindex=\"-1\">");
+            if (data != null) {
+                sb.append(data);
+            }
+            sb.appendHtmlConstant("</button>");
+        }
+    };
     Column<Attribute, String> bColumn = new Column<Attribute, String>(buttonCell) {
         @Override
         public String getValue(Attribute object) {
-            return "EDIT";
+            return "Edit";
         }
 
     };
     Column<Attribute, String> deleteColumn = new Column<Attribute, String>(buttonCell) {
         @Override
         public String getValue(Attribute object) {
-            return "DELETE";
+            return "Delete";
         }
 
     };
@@ -61,6 +72,9 @@ public class AttributeView extends Composite {
     Label infoLabel = new Label("");
 
     AttributeView() {
+        panel.setStyleName("myPanel");
+        grid.setStyleName("input");
+        infoLabel.setStyleName("infoLabel");
         RootPanel.get().add(panel);
         table.addColumn(idColumn, "ID");
         table.addColumn(nameColumn, "Name");
@@ -101,35 +115,42 @@ public class AttributeView extends Composite {
             if (!addButton.getText().equals("Add")) {
                 attribute.setIdAttribute(Long.valueOf(id.getText()));
             }
-            attribute.setName(name.getText());
-            if (addButton.getText().equals("Add")) {
-                restService.saveAttribute(attribute, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        refreshTable();
-                    }
-                });
+            if (name.getText().isEmpty()) {
+                infoLabel.setText("Value should not be empty");
             } else {
-                restService.updateAttribute(attribute, new MethodCallback<Void>() {
-                    @Override
-                    public void onFailure(Method method, Throwable exception) {
+                attribute.setName(name.getText());
+                if (addButton.getText().equals("Add")) {
+                    restService.saveAttribute(attribute, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onSuccess(Method method, Void response) {
-                        refreshTable();
-                    }
-                });
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                } else {
+                    restService.updateAttribute(attribute, new MethodCallback<Void>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Method method, Void response) {
+                            infoLabel.setText("");
+                            refreshTable();
+                        }
+                    });
+                }
+                id.setText("");
+                name.setText("");
+                addButton.setText("Add");
             }
-            id.setText("");
-            name.setText("");
-            addButton.setText("Add");
         });
         bColumn.setFieldUpdater((index, object, value) ->
         {

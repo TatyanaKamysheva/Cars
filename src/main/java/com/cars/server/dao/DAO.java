@@ -14,6 +14,7 @@ import java.util.List;
 public abstract class DAO<E, I extends Serializable> {
 
     protected Class<E> entityClass;
+
     private Logger logger = Logger.getLogger(DAO.class);
     private SessionFactory sessionFactory;
 
@@ -42,8 +43,10 @@ public abstract class DAO<E, I extends Serializable> {
         //getCurrentSession().flush();
     }
 
+    @Transactional
     public E findById(I id) {
-        logger.info("Find entity with id.." + id);
+        /*logger.info("Find entity with id.." + id);
+        logger.info((E) getCurrentSession().get(entityClass, id).toString());*/
         return (E) getCurrentSession().get(entityClass, id);
     }
 

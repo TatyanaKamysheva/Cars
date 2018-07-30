@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
-public class ChangePasswordDialogBox extends DialogBox {
+class ChangePasswordDialogBox extends DialogBox {
     private GWTService restService = (GWTService) GWT.create(GWTService.class);
 
     ChangePasswordDialogBox(UserLoginInfo userLoginInfo) {
@@ -24,6 +24,7 @@ public class ChangePasswordDialogBox extends DialogBox {
 
         Label messageLabel = new Label();
         verticalPanel.add(messageLabel);
+        messageLabel.setStyleName("infoLabel");
 
         Grid grid = new Grid(3, 2);
         grid.setCellSpacing(10);
@@ -40,7 +41,7 @@ public class ChangePasswordDialogBox extends DialogBox {
         grid.setWidget(1, 1, newUserPassword1);
         grid.setWidget(2, 0, new Label("Repeat new password: "));
         grid.setWidget(2, 1, newUserPassword2);
-
+        grid.setStyleName("boxForLogging");
         verticalPanel.add(grid);
 
         changePswrdButton.addClickHandler((ClickEvent clickEvent) -> {
@@ -108,18 +109,14 @@ public class ChangePasswordDialogBox extends DialogBox {
             }
         });
 
-        //добавляю на нижнюю горизонтальную панель кнопку cancel
         HorizontalPanel buttonsHorizontalPanel = new HorizontalPanel();
 
         PushButton cancelButton = new PushButton("Cancel");
-        cancelButton.addClickHandler(clickEvent ->
+        cancelButton.addClickHandler(clickEvent -> hide());
 
-                hide());
         buttonsHorizontalPanel.add(changePswrdButton);
         buttonsHorizontalPanel.add(cancelButton);
-
         verticalPanel.add(buttonsHorizontalPanel);
-
         setWidget(verticalPanel);
     }
 }

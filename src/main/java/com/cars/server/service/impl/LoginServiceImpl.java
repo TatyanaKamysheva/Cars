@@ -54,7 +54,12 @@ public class LoginServiceImpl {
         userDAO.save(user);
     }
 
+    public User findById(Long id) {
+        return userDAO.findById(id);
+    }
+
     public void delete(Long id) {
-        userDAO.delete(userDAO.findById(id));
+        User user = userDAO.findById(id);
+        userDAO.delete(user);
     }
 }

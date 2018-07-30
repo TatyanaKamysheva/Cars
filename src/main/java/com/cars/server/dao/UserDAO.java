@@ -6,8 +6,6 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
-
-
 @Repository("userDAO")
 public class UserDAO extends DAO<User, Long> {
 
