@@ -54,6 +54,12 @@
             <version>2.2.2</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava-gwt -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-gwt</artifactId>
+            <version>26.0-jre</version>
+        </dependency>
 
         <!-- Spring-->
         <dependency>

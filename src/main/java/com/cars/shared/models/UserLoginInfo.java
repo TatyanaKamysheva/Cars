@@ -1,40 +1,49 @@
 package com.cars.shared.models;
 
 
+import com.cars.shared.Roles;
+
 import java.io.Serializable;
+import java.util.Objects;
 
 public class UserLoginInfo implements Serializable {
-    boolean isTeamlead;
-    private long employeeId;
-    private String employeeFirstName;
-    private String employeeLastName;
+    private Long userId;
+    private String firstName;
+    private String surname;
     private Roles role;
 
     public UserLoginInfo() {
     }
 
-    public long getEmployeeId() {
-        return employeeId;
+    public UserLoginInfo(Long userId, String firstName, String surname, Roles role) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.role = role;
     }
 
-    public void setEmployeeId(long employeeId) {
-        this.employeeId = employeeId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public String getEmployeeFirstName() {
-        return employeeFirstName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public void setEmployeeFirstName(String employeeFirstName) {
-        this.employeeFirstName = employeeFirstName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getEmployeeLastName() {
-        return employeeLastName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setEmployeeLastName(String employeeLastName) {
-        this.employeeLastName = employeeLastName;
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public Roles getRole() {
@@ -45,11 +54,30 @@ public class UserLoginInfo implements Serializable {
         this.role = role;
     }
 
-    public boolean getTeamlead() {
-        return isTeamlead;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserLoginInfo)) return false;
+        UserLoginInfo that = (UserLoginInfo) o;
+        return Objects.equals(getUserId(), that.getUserId()) &&
+                Objects.equals(getFirstName(), that.getFirstName()) &&
+                Objects.equals(getSurname(), that.getSurname()) &&
+                getRole() == that.getRole();
     }
 
-    public void setTeamlead(boolean teamlead) {
-        isTeamlead = teamlead;
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getUserId(), getFirstName(), getSurname(), getRole());
+    }
+
+    @Override
+    public String toString() {
+        return "UserLoginInfo{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", surname='" + surname + '\'' +
+                ", role=" + role +
+                '}';
     }
 }

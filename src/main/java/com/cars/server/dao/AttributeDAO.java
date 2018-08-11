@@ -1,6 +1,6 @@
 package com.cars.server.dao;
 
-import com.cars.shared.models.Attribute;
+import com.cars.shared.models.entities.Attribute;
 import org.springframework.stereotype.Repository;
 
 @Repository("attributeDAO")

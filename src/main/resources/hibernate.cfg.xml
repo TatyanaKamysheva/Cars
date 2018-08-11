@@ -10,11 +10,11 @@
         <property name="connection.password">1111</property>
         <property name="hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
-        <mapping class="com.cars.shared.models.Manager"/>
-        <mapping class="com.cars.shared.models.Customer"/>
-        <mapping class="com.cars.shared.models.Attribute"/>
-        <mapping class="com.cars.shared.models.User"/>
-        <mapping class="com.cars.shared.models.Purchase"/>
-        <mapping class="com.cars.shared.models.Automobile"/>
+        <mapping class="com.cars.shared.models.entities.Employee"/>
+        <mapping class="com.cars.shared.models.entities.Customer"/>
+        <mapping class="com.cars.shared.models.entities.Attribute"/>
+        <mapping class="com.cars.shared.models.entities.User"/>
+        <mapping class="com.cars.shared.models.entities.Purchase"/>
+        <mapping class="com.cars.shared.models.entities.Automobile"/>
     </session-factory>
 </hibernate-configuration>

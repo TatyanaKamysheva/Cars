@@ -11,15 +11,6 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 
     <tx:annotation-driven/>
     <mvc:annotation-driven/>
-    <!--<bean
-            class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <bean
-                        class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-            </list>
-        </property>
-    </bean>-->
     <!--.....................Database config........................-->
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
         <property value="oracle.jdbc.driver.OracleDriver" name="driverClassName"/>
@@ -31,18 +22,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
     <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
           id="hibernate4AnnotatedSessionFactory">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.cars.shared.models"/>
-        <!--<property name="annotatedClasses">
-            <list>
-                <value>com.cars.shared.models.Manager</value>
-                <value>com.cars.shared.models.Customer</value>
-                <value>com.cars.shared.models.Attribute</value>
-                <value>com.cars.shared.models.Automobile</value>
-                <value>com.cars.shared.models.Equipment</value>
-                <value>com.cars.shared.models.Purchase</value>
-                <value>com.cars.shared.models.User</value>
-            </list>
-        </property>-->
+        <property name="packagesToScan" value="com.cars.shared.models.entities"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
@@ -50,7 +30,6 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
                 <prop key="connection.url">jdbc:oracle:thin:@localhost:1521:car</prop>
                 <prop key="hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <!-- <prop key="hibernate.default_schema">CAR</prop>-->
             </props>
         </property>
     </bean>
@@ -59,18 +38,6 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 
-
-    <!--<bean class="com.cars.server.dao.ManagerDAO" id="managerDAO">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
-    </bean>
-    <bean class="com.cars.server.dao.CustomerDAO" id="customerDAO">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
-    </bean>-->
-
-    <!-- Service-->
-    <!-- <bean class="com.cars.server.service.impl.ManagerServiceImplImpl" id="managerService">
-         <property name="managerDAO" ref="managerDAO"/>
-     </bean>-->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">
             <list>
@@ -83,6 +50,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
         </property>
     </bean>
 </beans>
+
 
 
 

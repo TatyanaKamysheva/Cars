@@ -1,4 +1,4 @@
-package com.cars.shared.models;
+package com.cars.shared;
 
 public enum Roles {
     Admin, Supervisor, Seller

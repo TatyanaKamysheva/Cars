@@ -7,12 +7,11 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Util {
 
     private MD5Util() {
-        //no instance
     }
 
     public static String md5Hex(String password) {
 
-        MessageDigest messageDigest = null;
+        MessageDigest messageDigest;
         byte[] digest = new byte[0];
 
         try {
