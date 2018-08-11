@@ -1,6 +1,6 @@
 package com.cars.client.view.listboxes;
 
-import com.cars.shared.models.Customer;
+import com.cars.shared.models.entities.Customer;
 import com.google.gwt.user.client.ui.ListBox;
 
 import java.util.List;

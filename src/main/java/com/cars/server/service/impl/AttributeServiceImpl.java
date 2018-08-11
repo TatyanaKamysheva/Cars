@@ -2,7 +2,7 @@ package com.cars.server.service.impl;
 
 import com.cars.server.dao.AttributeDAO;
 import com.cars.server.service.api.AttributeService;
-import com.cars.shared.models.Attribute;
+import com.cars.shared.models.entities.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,6 @@ public class AttributeServiceImpl implements AttributeService {
     public void update(Attribute attribute) {
         attributeDAO.update(attribute);
     }
-
 
     public void delete(Long id) {
         attributeDAO.delete(findById(id));

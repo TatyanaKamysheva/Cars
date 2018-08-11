@@ -1,43 +1,44 @@
 package com.cars.server.service.impl;
 
 import com.cars.server.dao.UserDAO;
-import com.cars.shared.models.Roles;
-import com.cars.shared.models.User;
+import com.cars.server.service.api.LoginService;
+import com.cars.shared.Roles;
 import com.cars.shared.models.UserLoginInfo;
-import org.apache.log4j.Logger;
+import com.cars.shared.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("loginService")
-public class LoginServiceImpl {
+public class LoginServiceImpl implements LoginService {
 
-    Logger logger = Logger.getLogger(LoginServiceImpl.class);
 
     @Autowired
     private UserDAO userDAO;
 
     public UserLoginInfo loginUser(String login, String password) {
-        logger.info(login + password);
         User user = userDAO.findUserByLogin(login);
-        logger.info(user);
+        if (user == null) return null;
         if (!user.getLogin().isEmpty()) {
             String passwordDB = user.getPassword();
             if (password.equals(passwordDB)) {
                 UserLoginInfo userLoginInfo = new UserLoginInfo();
-                userLoginInfo.setEmployeeId(user.getManager().getIdManager());
-                userLoginInfo.setEmployeeFirstName(user.getManager().getSurname());
-
-                if (user.getManager().getRole().equals("Admin")) {
-                    userLoginInfo.setRole(Roles.Admin);
-                } else if (user.getManager().getRole().equals("Supervisor")) {
-                    userLoginInfo.setRole(Roles.Supervisor);
-                } else {
-                    userLoginInfo.setRole(Roles.Seller);
+                userLoginInfo.setUserId(user.getEmployee().getEmployeeId());
+                userLoginInfo.setFirstName(user.getEmployee().getFirstName());
+                userLoginInfo.setSurname(user.getEmployee().getSurname());
+                switch (user.getEmployee().getRole()) {
+                    case "Admin":
+                        userLoginInfo.setRole(Roles.Admin);
+                        break;
+                    case "Supervisor":
+                        userLoginInfo.setRole(Roles.Supervisor);
+                        break;
+                    default:
+                        userLoginInfo.setRole(Roles.Seller);
+                        break;
                 }
                 return userLoginInfo;
             }
         }
-
         return null;
     }
 
@@ -50,7 +51,6 @@ public class LoginServiceImpl {
     }
 
     public void save(User user) {
-        logger.info("Save" + user.toString());
         userDAO.save(user);
     }
 

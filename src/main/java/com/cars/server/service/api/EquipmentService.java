@@ -1,7 +1,8 @@
 package com.cars.server.service.api;
 
-import com.cars.shared.models.AutoPopup;
-import com.cars.shared.models.Equipment;
+import com.cars.shared.models.AttributePopup;
+import com.cars.shared.models.entities.Equipment;
+import com.cars.shared.models.Modification;
 
 import java.util.List;
 
@@ -16,7 +17,11 @@ public interface EquipmentService {
 
     List<Equipment> getAll();
 
-    List<AutoPopup> getComfortAttributesList(Long id, String modification);
+    List<Equipment> filter(Long id);
 
-    List<String> getModification(Long id);
+    List<Equipment> getAttributeList(Long id, String modification);
+
+    List<Modification> listModifications(Long id);
+
+    Equipment getAvailability(Long id, String modification);
 }

@@ -1,6 +1,6 @@
 package com.cars.client.view.listboxes;
 
-import com.cars.shared.models.Automobile;
+import com.cars.shared.models.entities.Automobile;
 import com.google.gwt.user.client.ui.ListBox;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class AutomobileListBox extends ListBox {
     public void setAutomobiles(List<Automobile> automobiles) {
         this.automobiles = automobiles;
         automobiles.stream()
-                .map(automobile -> automobile.getModel() + " " + automobile.getName())
+                .map(automobile -> automobile.getModel() + " " + automobile.getManufacturer())
                 .forEach(this::addItem);
     }
 
@@ -31,7 +31,7 @@ public class AutomobileListBox extends ListBox {
 
         return automobiles.stream()
                 .filter(automobile -> selectedModel.equals(automobile.getModel())
-                        && selectedName.equals(automobile.getName()))
+                        && selectedName.equals(automobile.getManufacturer()))
                 .findFirst()
                 .orElse(null);
     }

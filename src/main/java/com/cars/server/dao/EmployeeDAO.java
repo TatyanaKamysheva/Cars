@@ -1,27 +1,27 @@
 package com.cars.server.dao;
 
-import com.cars.shared.models.Manager;
+import com.cars.shared.models.entities.Employee;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 
 @Repository("managerDAO")
-public class ManagerDAO extends DAO<Manager, Long> {
+public class EmployeeDAO extends DAO<Employee, Long> {
 
-    public ManagerDAO() {
-        super(Manager.class);
+    public EmployeeDAO() {
+        super(Employee.class);
     }
 
-    public Manager getByName(String fname, String surname) {
+    public Employee getByName(String fname, String surname) {
         Query q = getCurrentSession()
-                .createQuery("from Manager " +
+                .createQuery("from Employee " +
                         "where firstName = :fname " +
                         "and surname = :surname")
                 .setParameter("fname", fname)
-                .setParameter("password", surname);
+                .setParameter("surname", surname);
         try {
-            return (Manager) q.uniqueResult();
+            return (Employee) q.uniqueResult();
         } catch (NoResultException e) {
             return null;
         }

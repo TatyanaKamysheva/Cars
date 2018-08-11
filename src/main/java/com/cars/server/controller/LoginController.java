@@ -1,8 +1,10 @@
 package com.cars.server.controller;
 
+import com.cars.server.service.api.LoginService;
 import com.cars.server.service.impl.LoginServiceImpl;
-import com.cars.shared.models.User;
+import com.cars.shared.models.Response;
 import com.cars.shared.models.UserLoginInfo;
+import com.cars.shared.models.entities.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +12,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class LoginController {
 
-    Logger logger = Logger.getLogger(LoginController.class);
+    private static final Logger logger = Logger.getLogger(LoginController.class);
     @Autowired
-    private LoginServiceImpl loginService;
+    private LoginService loginService;
 
     @RequestMapping(value = "/login_{login}_{password}", method = RequestMethod.GET)
     public
     @ResponseBody
     UserLoginInfo loginUser(@PathVariable("login") String login, @PathVariable("password") String password) {
-        logger.info(login + "  " + password);
+        logger.info(loginService.loginUser(login, password).toString());
         return loginService.loginUser(login, password);
     }
 
@@ -31,12 +33,22 @@ public class LoginController {
 
     @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
     @ResponseBody
-    public void update(@RequestBody User user) {
-        this.loginService.update(user);
+    public Response update(@RequestBody User user) {
+        try {
+            this.loginService.update(user);
+            return new Response(1, "User successfully updated!");
+        } catch (Exception e) {
+            return new Response(0, e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public void deleteUser(@PathVariable("id") Long id) {
-        loginService.delete(id);
+    public Response deleteUser(@PathVariable("id") Long id) {
+        try {
+            this.loginService.delete(id);
+            return new Response(1, "User successfully deleted!");
+        } catch (Exception e) {
+            return new Response(0, e.getMessage());
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.cars.server.service.api;
 
-import com.cars.shared.models.Purchase;
+import com.cars.shared.models.entities.Purchase;
 
 import java.util.List;
 

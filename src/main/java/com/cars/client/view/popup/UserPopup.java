@@ -6,11 +6,11 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UserPopup extends PopupPanel {
-    VerticalPanel panel = new VerticalPanel();
-    Button button = new Button("Close");
-    Label loginLable = new Label("Login: ");
-    Label passwordLabel = new Label("Password: 2222");
-    Label message = new Label("To change your password sing in and choose the Option Button");
+    private VerticalPanel panel = new VerticalPanel();
+    private Button button = new Button("Close");
+    private Label loginLable = new Label("Login: ");
+    private Label passwordLabel = new Label("Password: 2222");
+    private Label message = new Label("To change your password sing in and choose the Option Button");
 
     public UserPopup(String login) {
         loginLable.setText(loginLable.getText() + login);
@@ -18,11 +18,8 @@ public class UserPopup extends PopupPanel {
         panel.add(passwordLabel);
         panel.add(message);
         panel.add(button);
-        button.addClickHandler(event -> {
-            hide();
-        });
+        button.addClickHandler(event -> hide());
         panel.setStyleName("boxForLogging");
         setWidget(panel);
     }
-
 }

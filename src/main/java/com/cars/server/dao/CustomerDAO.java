@@ -1,6 +1,6 @@
 package com.cars.server.dao;
 
-import com.cars.shared.models.Customer;
+import com.cars.shared.models.entities.Customer;
 import org.springframework.stereotype.Repository;
 
 @Repository("customerDAO")
@@ -10,3 +10,6 @@ public class CustomerDAO extends DAO<Customer, Long> {
         super(Customer.class);
     }
 }
+
+
+

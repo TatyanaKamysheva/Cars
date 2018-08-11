@@ -103,7 +103,18 @@ body, a, div, .p {
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
-    border: 1px solid #888;
+    text-emphasis-color: white;
+}
+
+.popupMessage {
+    text-decoration-color: white;
+    color: white;
+    background-color: #006bb3;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    text-emphasis-color: white;
+    -webkit-text-fill-color: white;
 }
 
 .gwt-PushButton {
@@ -126,4 +137,14 @@ body, a, div, .p {
 
 .infoLabel {
     color: red;
+}
+
+.gwt-DialogBox .Caption {
+    background: #006bb3;
+    padding: 20px;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    text-emphasis-color: white;
+    -webkit-text-fill-color: white;
 }

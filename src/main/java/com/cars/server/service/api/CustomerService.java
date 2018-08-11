@@ -1,6 +1,6 @@
 package com.cars.server.service.api;
 
-import com.cars.shared.models.Customer;
+import com.cars.shared.models.entities.Customer;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package com.cars.server.controller;
 
 
 import com.cars.server.service.api.CustomerService;
-import com.cars.shared.models.Customer;
-import org.apache.log4j.Logger;
+import com.cars.shared.models.Response;
+import com.cars.shared.models.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +12,20 @@ import java.util.List;
 @RestController
 public class CustomerController {
 
-    Logger logger = Logger.getLogger(CustomerController.class);
-
     @Autowired
     private CustomerService customerService;
+
+
+    @RequestMapping(value = "/customers", method = RequestMethod.POST)
+    @ResponseBody
+    Response save(@RequestBody Customer customer) {
+        try {
+            this.customerService.save(customer);
+            return new Response(1, "Customer successfully saved!");
+        } catch (Exception e) {
+            return new Response(0, e.getMessage());
+        }
+    }
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
@@ -24,22 +34,25 @@ public class CustomerController {
         return this.customerService.getAll();
     }
 
-    @RequestMapping(value = "/customers", method = RequestMethod.POST)
-    @ResponseBody
-    void save(@RequestBody Customer customer) throws Exception {
-        logger.info(customer.toString());
-        this.customerService.save(customer);
-    }
-
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void delete(@PathVariable("id") Long id) throws Exception {
-        this.customerService.delete(id);
+    public Response delete(@PathVariable("id") Long id) {
+        try {
+            this.customerService.delete(id);
+            return new Response(1, "Customer successfully deleted!");
+        } catch (Exception e) {
+            return new Response(0, e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/customers/update", method = RequestMethod.PUT)
     @ResponseBody
-    public void update(@RequestBody Customer customer) throws Exception {
-        this.customerService.update(customer);
+    public Response update(@RequestBody Customer customer) {
+        try {
+            this.customerService.update(customer);
+            return new Response(1, "Customer successfully updated!");
+        } catch (Exception e) {
+            return new Response(0, e.getMessage());
+        }
     }
 }

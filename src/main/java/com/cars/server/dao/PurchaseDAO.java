@@ -1,6 +1,6 @@
 package com.cars.server.dao;
 
-import com.cars.shared.models.Purchase;
+import com.cars.shared.models.entities.Purchase;
 import org.springframework.stereotype.Repository;
 
 

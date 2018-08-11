@@ -1,6 +1,6 @@
 package com.cars.server.dao;
 
-import com.cars.shared.models.Automobile;
+import com.cars.shared.models.entities.Automobile;
 import org.springframework.stereotype.Repository;
 
 @Repository("automobileDAO")

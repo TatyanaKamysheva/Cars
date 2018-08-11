@@ -7,7 +7,7 @@ public final class ConstantProvider {
     public static final String PASSWORD_PATTERN = "^[a-zA-Z\\d]{3,20}$";
     public static final String PASSPORT_PATTERN = "^[\\d]{10}$";
     public static final String PHONE_PATTERN = "^[\\d\\D]{3,20}$";
-    public static final String STRING_PATTERN = "^[a-zA-Z\\d\\D]{1,20}$";
+    public static final String STRING_PATTERN = "^[a-zA-Z\\d\\s]{1,20}$";
 
     private ConstantProvider() {
     }

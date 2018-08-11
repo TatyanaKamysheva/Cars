@@ -1,6 +1,6 @@
 package com.cars.client.view.listboxes;
 
-import com.cars.shared.models.Attribute;
+import com.cars.shared.models.entities.Attribute;
 import com.google.gwt.user.client.ui.ListBox;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class AttributeListBox extends ListBox {
     public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
         attributes.stream()
-                .map(attribute -> attribute.getName())
+                .map(Attribute::getName)
                 .forEach(this::addItem);
     }
 

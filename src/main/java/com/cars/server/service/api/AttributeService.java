@@ -1,6 +1,6 @@
 package com.cars.server.service.api;
 
-import com.cars.shared.models.Attribute;
+import com.cars.shared.models.entities.Attribute;
 
 import java.util.List;
 

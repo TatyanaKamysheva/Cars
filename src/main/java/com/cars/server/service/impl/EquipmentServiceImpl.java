@@ -3,20 +3,20 @@ package com.cars.server.service.impl;
 
 import com.cars.server.dao.EquipmentDAO;
 import com.cars.server.service.api.EquipmentService;
-import com.cars.shared.models.AutoPopup;
-import com.cars.shared.models.Equipment;
-import org.apache.log4j.Logger;
+import com.cars.shared.models.Modification;
+import com.cars.shared.models.entities.Equipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service("equipmentService")
 public class EquipmentServiceImpl implements EquipmentService {
 
-    Logger logger = Logger.getLogger(EquipmentServiceImpl.class);
     @Autowired
     private EquipmentDAO equipmentDAO;
 
@@ -45,37 +45,40 @@ public class EquipmentServiceImpl implements EquipmentService {
         return equipmentDAO.getAll();
     }
 
-    public List<AutoPopup> getComfortAttributesList(Long id, String modification) {
-        List<AutoPopup> list = new ArrayList<>();
-        AutoPopup autoPopup = new AutoPopup();
-        for (Equipment e : equipmentDAO.getAll()) {
-            if (id.compareTo(e.getIdAutomobile().getIdAutomobile()) == 0) {
-                if (e.getNameMod().equals(modification)) {
-                    autoPopup.setAttribute(e.getIdAttribute().getName());
-                    autoPopup.setValue(e.getValue());
-                    list.add(autoPopup);
-                }
-            }
+    @Override
+    public List<Equipment> filter(Long id) {
+        return equipmentDAO.listEquipmentById(id);
+    }
+
+    public List<Equipment> getAttributeList(Long id, String modification) {
+        return equipmentDAO.listEquipmentByModification(id, modification);
+    }
+
+
+    @Override
+    public List<Modification> listModifications(Long id) {
+        List<Modification> list = new ArrayList<>();
+        HashSet<String> set = new HashSet<>();
+        for (Equipment e : equipmentDAO.listEquipmentById(id)) {
+            set.add(e.getModificationName());
+        }
+        for (String aSet : set) {
+            list.add(new Modification(aSet));
         }
         return list;
     }
 
     @Override
-    public List<String> getModification(Long id) {
-        List<String> list = new ArrayList<>();
+    public Equipment getAvailability(Long id, String modification) {
         for (Equipment e : equipmentDAO.getAll()) {
-            if (e.getIdAutomobile().getIdAutomobile().equals(id)) {
-                if (e.getNameMod().equals("Standard")) {
-                    if (!list.contains("Standard"))
-                        list.add("Standard");
-                }
-                if (e.getNameMod().equals("Comfort")) {
-                    if (!list.contains("Comfort")) list.add("Comfort");
+            if (e.getModificationName().equals(modification)) {
+                if (e.getAttribute().getName().equals("Availability")) {
+                    if (Objects.equals(e.getAutomobile().getAutomobileId(), id)) {
+                        return e;
+                    }
                 }
             }
         }
-        return list;
+        return null;
     }
-
-
 }

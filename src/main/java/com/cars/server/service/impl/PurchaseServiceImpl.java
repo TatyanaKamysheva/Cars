@@ -2,7 +2,7 @@ package com.cars.server.service.impl;
 
 import com.cars.server.dao.PurchaseDAO;
 import com.cars.server.service.api.PurchaseService;
-import com.cars.shared.models.Purchase;
+import com.cars.shared.models.entities.Purchase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

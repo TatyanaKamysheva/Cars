@@ -2,7 +2,7 @@ package com.cars.server.service.impl;
 
 import com.cars.server.dao.CustomerDAO;
 import com.cars.server.service.api.CustomerService;
-import com.cars.shared.models.Customer;
+import com.cars.shared.models.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerDAO customerDAO;
 
-    @Autowired
-    public CustomerServiceImpl(CustomerDAO customerDAO) {
-        this.customerDAO = customerDAO;
-    }
-
     @Override
     public void save(Customer customer) {
         customerDAO.save(customer);
+    }
+
+    @Autowired
+    public CustomerServiceImpl(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
     }
 
     @Override

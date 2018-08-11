@@ -1,8 +1,8 @@
 package com.cars.server.service.impl;
 
-import com.cars.server.dao.ManagerDAO;
+import com.cars.server.dao.EmployeeDAO;
 import com.cars.server.service.api.ManagerService;
-import com.cars.shared.models.Manager;
+import com.cars.shared.models.entities.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,43 +12,40 @@ import java.util.List;
 public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
-    private ManagerDAO managerDAO;
+    private EmployeeDAO employeeDAO;
 
     @Autowired
-    public ManagerServiceImpl(ManagerDAO managerDAO) {
-        this.managerDAO = managerDAO;
+    public ManagerServiceImpl(EmployeeDAO employeeDAO) {
+        this.employeeDAO = employeeDAO;
     }
 
     @Override
-    public void save(Manager manager) {
-        managerDAO.save(manager);
+    public void save(Employee manager) {
+        employeeDAO.save(manager);
     }
 
     @Override
-    public Manager findById(Long id) {
-        return managerDAO.findById(id);
+    public Employee findById(Long id) {
+        return employeeDAO.findById(id);
     }
 
     @Override
-    public void update(Manager manager) {
-        managerDAO.update(manager);
+    public void update(Employee manager) {
+        employeeDAO.update(manager);
     }
 
     @Override
     public void delete(Long id) {
-        managerDAO.delete(findById(id));
+        employeeDAO.delete(findById(id));
     }
 
     @Override
-    public List<Manager> getAll() {
-        return managerDAO.getAll();
+    public List<Employee> getAll() {
+        return employeeDAO.getAll();
     }
 
-    public void setManagerDAO(ManagerDAO managerDAO) {
-    }
-
-    public Manager getByName(String fname, String surname) {
-        return this.managerDAO.getByName(fname, surname);
+    public Employee getByName(String fname, String surname) {
+        return this.employeeDAO.getByName(fname, surname);
     }
 }
 

@@ -150,6 +150,7 @@ public class AttributeView extends Composite {
 
                         @Override
                         public void onSuccess(Method method, Response response) {
+                            messageBox.setGlassEnabled(true);
                             messageBox.setText(response.getMessage());
                             Timer timer = new Timer() {
                                 @Override

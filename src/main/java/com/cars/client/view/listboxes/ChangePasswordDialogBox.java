@@ -3,7 +3,7 @@ package com.cars.client.view.listboxes;
 import com.cars.client.rest.GWTService;
 import com.cars.shared.ConstantProvider;
 import com.cars.shared.MD5Util;
-import com.cars.shared.models.User;
+import com.cars.shared.models.entities.User;
 import com.cars.shared.models.UserLoginInfo;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

@@ -1,54 +1,56 @@
-package com.cars.shared.models;
+package com.cars.shared.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Entity
-@Table(name = "MANAGER")
-public class Manager implements Serializable {
+@Table(name = "EMPLOYEE")
+public class Employee implements Serializable {
+
+    @Id
+    @Column(name = "EMPLOYEE_ID")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "MANAG")
+    @SequenceGenerator(name = "MANAG", sequenceName = "MANAG")
+    private Long employeeId;
+
+    @Column(name = "SURNAME")
+    private String surname;
+
+    @Column(name = "PHONE")
+    private String phone;
+
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+
+    @Column(name = "ROLE_EMPLOYEE")
+    private String role;
 
     @OneToOne
     @PrimaryKeyJoinColumn
     @JsonIgnore
-    User user;
+    private User user;
 
-    @Id
-    @Column(name = "ID_MANAGER")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "MANAG")
-    @SequenceGenerator(name = "MANAG", sequenceName = "MANAG")
-    private Long idManager;
-    @Column(name = "SURNAME")
-    private String surname;
-    @Column(name = "SALARY")
-    private Long salary;
-    @Column(name = "PHONE")
-    private String phone;
-    @Column(name = "FIRST_NAME")
-    private String firstName;
-    @Column(name = "ROLE_M")
-    private String role;
-
-    public Manager() {
+    public Employee() {
     }
 
-    public Manager(User user, String surname, Long salary, String phone, String firstName, String role) {
-        this.user = user;
+    public Employee(String surname, String phone, String firstName, String role, User user) {
         this.surname = surname;
-        this.salary = salary;
         this.phone = phone;
         this.firstName = firstName;
         this.role = role;
+        this.user = user;
     }
 
-    public Long getIdManager() {
-        return idManager;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setIdManager(Long idManager) {
-        this.idManager = idManager;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public User getUser() {
@@ -57,14 +59,6 @@ public class Manager implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Long getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Long salary) {
-        this.salary = salary;
     }
 
     public String getPhone() {
@@ -100,12 +94,29 @@ public class Manager implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(getEmployeeId(), employee.getEmployeeId()) &&
+                Objects.equals(getSurname(), employee.getSurname()) &&
+                Objects.equals(getPhone(), employee.getPhone()) &&
+                Objects.equals(getFirstName(), employee.getFirstName()) &&
+                Objects.equals(getRole(), employee.getRole()) &&
+                Objects.equals(getUser(), employee.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getEmployeeId(), getSurname(), getPhone(), getFirstName(), getRole(), getUser());
+    }
+
+    @Override
     public String toString() {
-        return "Manager{" +
-                "user=" + user +
-                ", idManager=" + idManager +
+        return "Employee{" +
+                "employeeId=" + employeeId +
                 ", surname='" + surname + '\'' +
-                ", salary=" + salary +
                 ", phone='" + phone + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", role='" + role + '\'' +

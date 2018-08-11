@@ -1,19 +1,19 @@
 package com.cars.server.service.api;
 
-import com.cars.shared.models.Manager;
+import com.cars.shared.models.entities.Employee;
 
 import java.util.List;
 
 public interface ManagerService {
-    void save(Manager manager) throws Exception;
+    void save(Employee manager) throws Exception;
 
-    Manager findById(Long id);
+    Employee findById(Long id);
 
-    void update(Manager manager) throws Exception;
+    void update(Employee manager) throws Exception;
 
     void delete(Long id) throws Exception;
 
-    List<Manager> getAll();
+    List<Employee> getAll();
 
-    Manager getByName(String fname, String surname);
+    Employee getByName(String fname, String surname);
 }

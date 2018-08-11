@@ -36,13 +36,13 @@ class MainView extends Composite {
         gridOption.setWidget(0, 0, logoutButton);
         gridOption.setWidget(1, 0, optionsButton);
         RootPanel.get().add(gridOption);
+
         switch (userLoginInfo.getRole()) {
             case Seller:
-                grid.setWidget(0, 0, customerButton);
-                grid.setWidget(0, 1, purchasesButton);
-                grid.setWidget(0, 2, automobilesButton);
-                grid.setWidget(0, 3, logoutButton);
-                grid.setWidget(0, 4, optionsButton);
+                grid.setWidget(0, 1, customerButton);
+                grid.setWidget(0, 2, purchasesButton);
+                grid.setWidget(0, 3, automobilesButton);
+                grid.setWidget(0, 4, equipmentsButton);
                 grid.setCellSpacing(30);
                 RootPanel.get().add(grid);
                 break;
@@ -56,13 +56,11 @@ class MainView extends Composite {
                 grid.setCellSpacing(30);
                 RootPanel.get().add(grid);
                 break;
-
             case Supervisor:
-                grid.setWidget(0, 1, attributesButton);
-                grid.setWidget(0, 2, automobilesButton);
-                grid.setWidget(0, 3, equipmentsButton);
-                grid.setWidget(0, 6, logoutButton);
-                grid.setWidget(0, 7, optionsButton);
+                grid.setWidget(0, 2, attributesButton);
+                grid.setWidget(0, 3, automobilesButton);
+                grid.setWidget(0, 4, equipmentsButton);
+                grid.setCellSpacing(30);
                 RootPanel.get().add(grid);
                 break;
         }
@@ -71,8 +69,8 @@ class MainView extends Composite {
         AutomobileView automobileView = new AutomobileView(userLoginInfo);
         PurchaseView purchaseView = new PurchaseView(userLoginInfo);
         AttributeView attributeView = new AttributeView();
-        ManagerView managerView = new ManagerView();
-        EquipmentView equipmentView = new EquipmentView();
+        ManagerView managerView = new ManagerView(userLoginInfo);
+        EquipmentView equipmentView = new EquipmentView(userLoginInfo);
         logoutButton.addClickHandler(event -> {
             Cookies.removeCookie("sessionID");
             Cookies.removeCookie("login");
@@ -160,4 +158,3 @@ class MainView extends Composite {
         });
     }
 }
-

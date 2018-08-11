@@ -2,7 +2,8 @@ package com.cars.server.controller;
 
 
 import com.cars.server.service.api.AutomobileService;
-import com.cars.shared.models.Automobile;
+import com.cars.shared.models.Response;
+import com.cars.shared.models.entities.Automobile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,19 +24,34 @@ public class AutomobileController {
 
     @RequestMapping(value = "/autos", method = RequestMethod.POST)
     @ResponseBody
-    void save(@RequestBody Automobile automobile) throws Exception {
-        this.automobileService.save(automobile);
+    Response save(@RequestBody Automobile automobile) {
+        try {
+            this.automobileService.save(automobile);
+            return new Response(1, "Automobile successfully saved!");
+        } catch (Exception e) {
+            return new Response(0, "Fail to save auto: " + e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/autos/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void delete(@PathVariable("id") Long id) throws Exception {
-        this.automobileService.delete(id);
+    public Response delete(@PathVariable("id") Long id) {
+        try {
+            this.automobileService.delete(id);
+            return new Response(1, "Automobile successfully deleted!");
+        } catch (Exception e) {
+            return new Response(0, "Fail to delete auto: " + e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/autos/update", method = RequestMethod.PUT)
     @ResponseBody
-    public void update(@RequestBody Automobile automobile) throws Exception {
-        this.automobileService.update(automobile);
+    public Response update(@RequestBody Automobile automobile) {
+        try {
+            this.automobileService.update(automobile);
+            return new Response(1, "Automobile successfully updated!");
+        } catch (Exception e) {
+            return new Response(0, "Fail to update auto: " + e.getMessage());
+        }
     }
 }

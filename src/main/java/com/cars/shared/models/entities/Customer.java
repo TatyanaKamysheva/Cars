@@ -1,17 +1,18 @@
-package com.cars.shared.models;
+package com.cars.shared.models.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "CUSTOMER")
 public class Customer implements Serializable {
 
     @Id
-    @Column(name = "ID_CLIENT")
+    @Column(name = "CUSTOMER_ID")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "CUSTOM")
     @SequenceGenerator(name = "CUSTOM", sequenceName = "CUSTOM")
-    private Long idCustomer;
+    private Long customerId;
 
     @Column(name = "SURNAME")
     private String surname;
@@ -35,12 +36,13 @@ public class Customer implements Serializable {
         this.phone = phone;
     }
 
-    public Long getIdCustomer() {
-        return idCustomer;
+
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setIdCustomer(Long idCustomer) {
-        this.idCustomer = idCustomer;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getSurname() {
@@ -75,11 +77,28 @@ public class Customer implements Serializable {
         this.phone = phone;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(getCustomerId(), customer.getCustomerId()) &&
+                Objects.equals(getSurname(), customer.getSurname()) &&
+                Objects.equals(getFirstName(), customer.getFirstName()) &&
+                Objects.equals(getPassport(), customer.getPassport()) &&
+                Objects.equals(getPhone(), customer.getPhone());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getCustomerId(), getSurname(), getFirstName(), getPassport(), getPhone());
+    }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "idCustomer=" + idCustomer +
+                "customerId=" + customerId +
                 ", surname='" + surname + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", passport=" + passport +

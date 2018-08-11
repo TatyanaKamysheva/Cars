@@ -12,9 +12,9 @@ import org.fusesource.restygwt.client.MethodCallback;
 
 import java.util.Random;
 
-public class LoginView extends Composite {
+class LoginView extends Composite {
 
-    GWTService restService = (GWTService) GWT.create(GWTService.class);
+    private GWTService restService = (GWTService) GWT.create(GWTService.class);
 
     public LoginView() {
 
@@ -24,7 +24,7 @@ public class LoginView extends Composite {
         PasswordTextBox userPassword = new PasswordTextBox();
         Button loginButton = new Button("Login");
         VerticalPanel mainPanel = new VerticalPanel();
-        mainPanel.setSpacing(20);
+        mainPanel.setSpacing(10);
         userLogin.setWidth("150px");
         userPassword.setWidth("150px");
 
@@ -39,14 +39,12 @@ public class LoginView extends Composite {
         mainPanel.add(grid);
         loginButton.addClickHandler(clickEvent -> {
             loginButton.setEnabled(false);
-
             Timer timer = new Timer() {
                 @Override
                 public void run() {
                     loginButton.setEnabled(true);
                 }
             };
-
             timer.schedule(7000);
 
             String login = userLogin.getText();
@@ -56,10 +54,12 @@ public class LoginView extends Composite {
 
             Cookies.setCookie("login", login);
             Cookies.setCookie("password", password);
+            // Cookies.setCookie("lastLogin", new Date().toString());
 
             restService.loginUser(login, password, new MethodCallback<UserLoginInfo>() {
                 @Override
                 public void onFailure(Method method, Throwable throwable) {
+                    infoLabel.setText("Wrong login or password!");
                 }
 
                 @Override
@@ -74,8 +74,12 @@ public class LoginView extends Composite {
                 }
             });
         });
+        HorizontalPanel panel = new HorizontalPanel();
+        panel.add(loginButton);
+        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         mainPanel.add(infoLabel);
-        mainPanel.add(loginButton);
+        panel.setStyleName("myPanel");
+        mainPanel.add(panel);
         RootPanel.get("options").add(mainPanel);
     }
 }
