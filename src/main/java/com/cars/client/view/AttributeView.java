@@ -104,7 +104,6 @@ public class AttributeView extends Composite {
         grid.setWidget(1, 0, nameLabel);
         grid.setWidget(1, 1, nameTextBox);
         grid.setWidget(2, 0, addButton);
-
         panel.add(grid);
         panel.add(infoLabel);
         panel.add(table);
@@ -115,8 +114,8 @@ public class AttributeView extends Composite {
             if (!addButton.getText().equals("Add")) {
                 attribute.setAttributeId(Long.valueOf(idTextBox.getText()));
             }
-            if (!nameTextBox.getText().equals(ConstantProvider.STRING_PATTERN)) {
-                infoLabel.setText("Invalid name: 1-20 english letters|digits|symbols");
+            if (!nameTextBox.getText().matches(ConstantProvider.STRING_PATTERN)) {
+                infoLabel.setText("Invalid name: 1-20 english letters or digits");
             } else {
                 attribute.setName(nameTextBox.getText());
                 if (addButton.getText().equals("Add")) {
@@ -151,7 +150,15 @@ public class AttributeView extends Composite {
 
                         @Override
                         public void onSuccess(Method method, Response response) {
-                            Window.alert(response.getMessage());
+                            messageBox.setText(response.getMessage());
+                            Timer timer = new Timer() {
+                                @Override
+                                public void run() {
+                                    messageBox.hide();
+                                }
+                            };
+                            timer.schedule(2000);
+                            messageBox.center();
                             infoLabel.setText("");
                             refreshTable();
                         }
@@ -168,6 +175,7 @@ public class AttributeView extends Composite {
             idTextBox.setEnabled(false);
             nameTextBox.setText(object.getName());
             addButton.setText("Submit");
+            infoLabel.setText("");
         });
         deleteColumn.setFieldUpdater(((index, object, value) ->
                 restService.deleteAttribute(object.getAttributeId(), new MethodCallback<Response>() {
@@ -178,7 +186,15 @@ public class AttributeView extends Composite {
 
                     @Override
                     public void onSuccess(Method method, Response response) {
-                        Window.alert(response.getMessage());
+                        messageBox.setText(response.getMessage());
+                        Timer timer = new Timer() {
+                            @Override
+                            public void run() {
+                                messageBox.hide();
+                            }
+                        };
+                        timer.schedule(2000);
+                        messageBox.center();
                         refreshTable();
                     }
                 })));
